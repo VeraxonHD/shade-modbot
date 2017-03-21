@@ -21,7 +21,7 @@ exports.run = (client, message, args) => {
         message.channel.guild.ban(banneduser.id, 7)
         //builds the embed for the log channel
         const embed = new Discord.RichEmbed()
-          .setAuthor((`Muted \`${banneduser.id.username}\``))
+          .setAuthor((`Banned \`${banneduser.id.username}\``))
           .setColor(0x00AE86)
           .setTimestamp(message.createdAt)
           .addField("Banned By: ", message.author.username, true)
