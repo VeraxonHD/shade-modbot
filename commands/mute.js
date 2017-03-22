@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
   const tgtchannel = message.guild.channels.get("292956168316256256");
 
   //Removes the default role (temp) and replaces it with the muted role
-  guild.member(user).removeRole("292955645513170944")
+  guild.member(user).setRoles([])
   guild.member(user).addRole(mutedRole)
 
   //Notifies the user
@@ -29,10 +29,10 @@ exports.run = (client, message, args) => {
     .setColor(0x00AE86)
     .setTimestamp(message.createdAt)
     .addField("Muted By: ", moderator, true)
-    .addField("Reason: ", args[1], true)
+    .addField("Reason: ", args.slice(1).join(" "), true)
     .setFooter("Automated Mod Logging");
   console.log(embed.fields)
   tgtchannel.sendEmbed(
-  embed,
+    embed,
   {disableEveryone: true })//.catch(console.error)
   }

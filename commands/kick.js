@@ -16,24 +16,26 @@ exports.run = (client, message, args) => {
       //if the user is kickable
       if (message.mentions.users.first().kickable = true){
         //send the confirmation message, add a react and kick the user
-        message.channel.sendMessage("Eos \`Success`\ - User kicked successfully.")
-        .then(message=>message.react('✅'));
-        message.channel.guild.kick(kickeduser.id, 7)
-        //builds the embed for the log channel
+        if (args.length === 2){
+        message.guild.member(kickeduser).kick()
+        .then(message.channel.sendMessage("Eos \`Success`\ - User kicked successfully.")
+        .then(message=>message.react('✅')));
+        //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
-          .setAuthor((`Kicked \`${kickeduser.id.username}\``))
+          .setAuthor((`Kicked ${kickeduser.username}`))
           .setColor(0x00AE86)
           .setTimestamp(message.createdAt)
           .addField("Kicked By: ", message.author.username, true)
-          .addField("Reason: ", args.join(" ").slice(21), true)
+          .addField("Reason: ", args.slice(1).join(" "), true)
           .setFooter("Automated Mod Logging");
           //sends the embed
           tgtchannel.sendEmbed(
             embed,
-            {disableEveryone: true })
-    }else{
-      //oddly unlikely not-able-to-kick message
-      message.channel.sendMessage("This user could not be kicked.")
+          {disableEveryone: true })
+        }else{
+          message.reply("Eos \`Error`\ - You must add a reason!")
+          .then(message=>message.react('❎'));
+      }
     }
   }
 }

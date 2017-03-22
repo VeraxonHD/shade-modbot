@@ -16,24 +16,26 @@ exports.run = (client, message, args) => {
       //if the user is bannable
       if (message.mentions.users.first().bannable = true){
         //send the confirmation message, add a react and ban the user
-        message.channel.sendMessage("Eos \`Success`\ - User banned successfully.")
-        .then(message=>message.react('✅'));
-        message.channel.guild.ban(banneduser.id, 7)
-        //builds the embed for the log channel
+        if (args.length === 2){
+        message.guild.member(banneduser).ban()
+        .then(message.channel.sendMessage("Eos \`Success`\ - User banned successfully.")
+        .then(message=>message.react('✅')));
+        //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
-          .setAuthor((`Banned \`${banneduser.id.username}\``))
+          .setAuthor((`Banned ${banneduser.username}`))
           .setColor(0x00AE86)
           .setTimestamp(message.createdAt)
           .addField("Banned By: ", message.author.username, true)
-          .addField("Reason: ", args.join(" ").slice(21), true)
+          .addField("Reason: ", args.slice(1).join(" "), true)
           .setFooter("Automated Mod Logging");
           //sends the embed
           tgtchannel.sendEmbed(
             embed,
-            {disableEveryone: true })
-    }else{
-      //oddly unlikely not-able-to-ban message
-      message.channel.sendMessage("This user could not be banned.")
+          {disableEveryone: true })
+        }else{
+          message.reply("Eos \`Error`\ - You must add a reason!")
+          .then(message=>message.react('❎'));
+      }
     }
   }
 }
