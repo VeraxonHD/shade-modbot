@@ -22,7 +22,6 @@ exports.run = (client, message, args) => {
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
-          //.setAuthor((`Banned ${banneduser.username}`))
           .setColor(0x00AE86)
           .setTimestamp(message.createdAt)
           .addField("User Banned: ", banneduser, true)
