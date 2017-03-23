@@ -1,4 +1,6 @@
 # eos-modbot
+![alt-text](https://goo.gl/qKTLk9 "Eos Modbot")
+
 The Eos Moderation Bot by Vex
 ***
 Eos is a Moderation bot for Discord, built in the D.JS Library available here: [Discord.js](http://discord.js.org)
