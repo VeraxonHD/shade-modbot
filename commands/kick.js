@@ -6,6 +6,11 @@ exports.run = (client, message, args, Discord) => {
   //saves the kick perms in a compact variable
   let kickPerms = message.channel.guild.members.get(client.user.id).hasPermission("KICK_MEMBERS")
 
+  if(!guild.member(message.author).hasPermission("KICK_MEMBERS")){
+    message.reply("Eos \`Error`\ - You do not have permission to do that!")
+      .then(message=>message.react('❎'));
+    return;
+  }
   //if the bot doesn't have the permissions
   if(!kickPerms){
     message.channel.sendMessage("Eos `Error` - Permission KICK_MEMBERS missing.")
