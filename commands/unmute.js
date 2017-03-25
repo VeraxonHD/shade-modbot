@@ -1,6 +1,4 @@
-exports.run = (client, message, args) => {
-  // Discord constant, as per.
-  const Discord = require("discord.js")
+exports.run = (client, message, args, Discord) => {
   //The ID for the guild (temp)
   let guild = message.guild
   //The ID for the muted role
@@ -10,7 +8,7 @@ exports.run = (client, message, args) => {
   //The moderator's username
   let moderator = message.author.username
   // The log channel
-  const tgtchannel = message.guild.channels.get("292956168316256256");
+  const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
   //Removes the muted role and replaces it with the normal role (temp)
   guild.member(user).removeRole(mutedRole)
@@ -33,5 +31,5 @@ exports.run = (client, message, args) => {
   console.log(embed.fields)
   tgtchannel.sendEmbed(
   embed,
-  {disableEveryone: true })//.catch(console.error)
+  {disableEveryone: true })
   }

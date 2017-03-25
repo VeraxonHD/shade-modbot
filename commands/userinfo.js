@@ -1,5 +1,4 @@
-exports.run = (client, message, args) => {
-  const Discord = require("discord.js")
+exports.run = (client, message, args, Discord) => {
   var username = message.mentions.users.first().username
   var userid = message.mentions.users.first().id
   var guild = message.guild
