@@ -5,6 +5,7 @@ exports.run = (client, message, args, Discord) => {
   var kickeduser = message.mentions.users.first()
   //saves the kick perms in a compact variable
   let kickPerms = message.channel.guild.members.get(client.user.id).hasPermission("KICK_MEMBERS")
+  let guild = message.guild
 
   if(!guild.member(message.author).hasPermission("KICK_MEMBERS")){
     message.reply("Eos \`Error`\ - You do not have permission to do that!")
