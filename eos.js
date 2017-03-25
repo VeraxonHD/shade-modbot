@@ -35,8 +35,12 @@ client.on("message", message => {
 
   try {
     let commandFile = require(`./commands/${command}.js`);
-    commandFile.run(client, message, args);
+    commandFile.run(client, message, args, Discord);
   } catch (err) {
     console.error(err);
   }
+});
+
+process.on("unhandledRejection", err => {
+  console.error("Uncaught Promise Error: \n" + err.stack);
 });
