@@ -6,6 +6,12 @@ exports.run = (client, message, args, Discord) => {
   //saves the ban perms in a compact variable
   let banPerms = message.channel.guild.members.get(client.user.id).hasPermission("BAN_MEMBERS")
 
+  if(!guild.member(moderator).hasPermission("BAN_MEMBERS")){
+    message.reply("Eos \`Error`\ - You do not have permission to do that!")
+      .then(message=>message.react('❎'));
+    return;
+  }
+
   //if the bot doesn't have the permissions
   if(!banPerms){
     message.channel.sendMessage("Eos `Error` - Permission banMembers missing.")

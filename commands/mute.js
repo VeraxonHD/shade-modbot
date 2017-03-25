@@ -10,7 +10,13 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  //Removes the default role (temp) and replaces it with the muted role
+  if(!guild.member(message.author).hasPermission("MANAGE_MESSAGES")){
+    message.reply("Eos \`Error`\ - You do not have permission to do that!")
+      .then(message=>message.react('❎'));
+    return;
+  }
+  if (args.length >= 2){
+  //Removes all roles and replaces them with the muted role
   guild.member(user).setRoles([])
   guild.member(user).addRole(mutedRole)
 
@@ -33,4 +39,8 @@ exports.run = (client, message, args, Discord) => {
   tgtchannel.sendEmbed(
     embed,
   {disableEveryone: true })//.catch(console.error)
+  }else{
+    message.reply("Eos \`Error`\ - You must add a reason!")
+    .then(message=>message.react('❎'));
   }
+}

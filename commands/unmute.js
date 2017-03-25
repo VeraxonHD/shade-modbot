@@ -10,6 +10,12 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
+  if(!guild.member(message.author).hasPermission("MANAGE_MESSAGES")){
+    message.reply("Eos \`Error`\ - You do not have permission to do that!")
+      .then(message=>message.react('❎'));
+    return;
+  }
+
   //Removes the muted role and replaces it with the normal role (temp)
   guild.member(user).removeRole(mutedRole)
   guild.member(user).addRole("292955645513170944")
