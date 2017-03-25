@@ -2,7 +2,7 @@ exports.run = (client, message, args) => {
   // Discord constant, as per.
   const Discord = require("discord.js")
   //The ID for the guild (temp)
-  let guild = client.guilds.get('292941255976026114')
+  let guild = message.guild
   //The ID for the muted role
   let mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
   //the user's mentionable

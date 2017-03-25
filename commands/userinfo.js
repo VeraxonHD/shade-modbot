@@ -1,10 +1,11 @@
 exports.run = (client, message, args) => {
   const Discord = require("discord.js")
   var username = message.mentions.users.first().username
-  //currently shows undefined
-  var nickname = message.mentions.users.first().nickname
   var userid = message.mentions.users.first().id
+  var guild = message.guild
+  var nickname = guild.members.get(userid).nickname
   var discrim = message.mentions.users.first().discriminator
+
   if(args.length < 1){
     message.reply("Eos \`Error`\ - You must identify a user to list.")
     .then(message=>message.react('❎'));
