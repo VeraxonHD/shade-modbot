@@ -5,6 +5,7 @@ exports.run = (client, message, args, Discord) => {
   var banneduser = message.mentions.users.first()
   //saves the ban perms in a compact variable
   let banPerms = message.channel.guild.members.get(client.user.id).hasPermission("BAN_MEMBERS")
+  let guild = message.guild
 
   if(!guild.member(moderator).hasPermission("BAN_MEMBERS")){
     message.reply("Eos \`Error`\ - You do not have permission to do that!")
