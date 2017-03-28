@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const cfg = require("./config.json");
 const fs = require("fs");
+const sql = require('sqlite');
+sql.open('./tags.sqlite');
 
 //logs in using token
 client.login(cfg.token);
@@ -35,7 +37,7 @@ client.on("message", message => {
 
   try {
     let commandFile = require(`./commands/${command}.js`);
-    commandFile.run(client, message, args, Discord);
+    commandFile.run(client, message, args, Discord, sql);
   } catch (err) {
     console.error(err);
   }
