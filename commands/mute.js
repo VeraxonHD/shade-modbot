@@ -1,6 +1,6 @@
 exports.run = (client, message, args, Discord) => {
-  //The ID for the guild (temp)
-  let guild = message.guild
+  var react = require("../eos.js")
+  var guild = message.guild
   //The ID for the muted role
   let mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
   //the user's mentionable
@@ -10,11 +10,7 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  if(!guild.member(message.author).hasPermission("MANAGE_MESSAGES")){
-    message.reply("Eos \`Error`\ - You do not have permission to do that!")
-      .then(message=>message.react('❎'));
-    return;
-  }
+  if(!guild.members.get(message.author).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
   //Removes all roles and replaces them with the muted role
   guild.member(user).setRoles([])
