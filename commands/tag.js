@@ -1,6 +1,8 @@
-exports.run = (client, message, args, Discord, sql) => {
+exports.run = (client, message, args, Discord) => {
 var react = require("../eos.js")
 var guild = message.guild
+var sql = require("sqlite")
+sql.open('./tags.sqlite');
 
   if (args[0] == "create") {
     var commandname = args[1]
@@ -29,6 +31,7 @@ var guild = message.guild
     var commandname = args[1]
     sql.get(`SELECT * FROM tags WHERE commandname = '${commandname}'`).then(row =>{
       if (!row){
+        return;
         message.channel.sendMessage("Eos \`Error`\ - That command does not exist!")
           .then(message=>message.react('❎'))
       }

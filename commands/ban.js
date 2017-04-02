@@ -8,10 +8,10 @@ exports.run = (client, message, args, Discord) => {
   //saves the ban perms in a compact variable
   let banPerms = message.channel.guild.member(client.user.id).hasPermission("BAN_MEMBERS")
 
-  if(!guild.members.get(message.author).hasPermission("BAN_MEMBERS")){return react.noPermReact()};
+  if(!guild.members.get(message.author.id).hasPermission("BAN_MEMBERS")){return react.noPermReact()};
 
   //if the bot doesn't have the permissions
-  if(!banPerms){return react.noPermReact()}
+  if(!banPerms){return react.noPermReact()
   }else{
       //if the user is bannable
       if (message.mentions.users.first().bannable = true){

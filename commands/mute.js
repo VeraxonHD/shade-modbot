@@ -10,7 +10,7 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  if(!guild.members.get(message.author).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
+  if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
   //Removes all roles and replaces them with the muted role
   guild.member(user).setRoles([])
