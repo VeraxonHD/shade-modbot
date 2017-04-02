@@ -1,7 +1,7 @@
 exports.run = (client, message, args, Discord) => {
   const react = require("../eos.js")
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
-  if(!message.author.id== "213040107278696450"){return react.noPermReact()}
+  if(message.author.id !== "213040107278696450"){return react.noPermReact()
   }else{
   // deletes the cache of the command and then re-loads the code.
   delete require.cache[require.resolve(`./${args[0]}.js`)];
