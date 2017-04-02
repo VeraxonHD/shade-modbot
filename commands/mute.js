@@ -1,8 +1,6 @@
-exports.run = (client, message, args) => {
-  // Discord constant, as per.
-  const Discord = require("discord.js")
-  //The ID for the guild (temp)
-  let guild = client.guilds.get('292941255976026114')
+exports.run = (client, message, args, Discord) => {
+  var react = require("../eos.js")
+  var guild = message.guild
   //The ID for the muted role
   let mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
   //the user's mentionable
@@ -10,9 +8,11 @@ exports.run = (client, message, args) => {
   //The moderator's username
   let moderator = message.author.username
   // The log channel
-  const tgtchannel = message.guild.channels.get("292956168316256256");
+  const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  //Removes the default role (temp) and replaces it with the muted role
+  if(!guild.members.get(message.author).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
+  if (args.length >= 2){
+  //Removes all roles and replaces them with the muted role
   guild.member(user).setRoles([])
   guild.member(user).addRole(mutedRole)
 
@@ -35,4 +35,8 @@ exports.run = (client, message, args) => {
   tgtchannel.sendEmbed(
     embed,
   {disableEveryone: true })//.catch(console.error)
+  }else{
+    message.reply("Eos \`Error`\ - You must add a reason!")
+    .then(message=>message.react('❎'));
   }
+}

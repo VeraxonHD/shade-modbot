@@ -31,6 +31,10 @@ var guild = message.guild
       if (!row){
         message.channel.sendMessage("Eos \`Error`\ - That command does not exist!")
           .then(message=>message.react('❎'))
+<<<<<<< HEAD
+=======
+          return;
+>>>>>>> da2b3278c235bee3943c64e9c14f626fbded8b96
       }
       sql.run(`DELETE FROM tags WHERE commandname = "${row.commandname}"`)})
       message.channel.sendMessage(`Eos \`Success\` - Command ${commandname} deleted`)

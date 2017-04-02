@@ -1,17 +1,17 @@
-exports.run = (client, message, args) => {
-  //Requires the d.js module for d.js specific shizzle
-  const Discord = require("discord.js");
+exports.run = (client, message, args, Discord) => {
+  var react = require("../eos.js")
+  var guild = message.guild
   //The targeted channel (aka mod log channel)
-  var tgtchannel = message.guild.channels.get("292956168316256256");
+  const tgtchannel = message.guild.channels.find('name', 'log-channel')
   //the user to be banned
   var banneduser = message.mentions.users.first()
   //saves the ban perms in a compact variable
-  let banPerms = message.channel.guild.members.get(client.user.id).hasPermission("BAN_MEMBERS")
+  let banPerms = message.channel.guild.member(client.user.id).hasPermission("BAN_MEMBERS")
+
+  if(!guild.members.get(message.author).hasPermission("BAN_MEMBERS")){return react.noPermReact()};
 
   //if the bot doesn't have the permissions
-  if(!banPerms){
-    message.channel.sendMessage("Eos `Error` - Permission banMembers missing.")
-    .then(message=>message.react('❎'));
+  if(!banPerms){return react.noPermReact()}
   }else{
       //if the user is bannable
       if (message.mentions.users.first().bannable = true){

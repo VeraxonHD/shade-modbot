@@ -1,17 +1,16 @@
-exports.run = (client, message, args) => {
-  //Requires the d.js module for d.js specific shizzle
-  const Discord = require("discord.js");
+exports.run = (client, message, args, Discord) => {
+  var react = require("../eos.js")
+  var guild = message.guild
   //The targeted channel (aka mod log channel)
-  var tgtchannel = message.guild.channels.get("292956168316256256");
+  const tgtchannel = message.guild.channels.find('name', 'log-channel')
   //the user to be kicked
   var kickeduser = message.mentions.users.first()
   //saves the kick perms in a compact variable
-  let kickPerms = message.channel.guild.members.get(client.user.id).hasPermission("KICK_MEMBERS")
+  let kickPerms = message.channel.guild.member(client.user.id).hasPermission("KICK_MEMBERS")
 
+if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return react.noPermReact()}
   //if the bot doesn't have the permissions
-  if(!kickPerms){
-    message.channel.sendMessage("Eos `Error` - Permission KICK_MEMBERS missing.")
-    .then(message=>message.react('❎'));
+  if(!kickPerms){return react.noPermReact()
   }else{
       //if the user is kickable
       if (message.mentions.users.first().kickable = true){
