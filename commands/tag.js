@@ -29,12 +29,12 @@ var guild = message.guild
     var commandname = args[1]
     sql.get(`SELECT * FROM tags WHERE commandname = '${commandname}'`).then(row =>{
       if (!row){
-        message.channel.sendMessage("Eos \`Success`\ - That command does not exist!")
+        message.channel.sendMessage("Eos \`Error`\ - That command does not exist!")
           .then(message=>message.react('❎'))
           return;
       }
       sql.run(`DELETE FROM tags WHERE commandname = "${row.commandname}"`)})
-      message.channel.sendMessage(`Eos \`Error\` - Command ${commandname} deleted`)
+      message.channel.sendMessage(`Eos \`Success\` - Command ${commandname} deleted`)
           .then(message=>message.react('✅'))
 
     .catch((err) => {
