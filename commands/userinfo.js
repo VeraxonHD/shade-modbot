@@ -9,7 +9,7 @@ function embedsend(){
   var username = message.mentions.users.first().username
   var userid = message.mentions.users.first().id
   var guild = message.guild
-  var nickname = guild.members.get(userid).nickname
+  var nickname = guild.members.get(userid).displayName
   var discrim = message.mentions.users.first().discriminator
   var joined = guild.members.get(userid).joinedAt
 
@@ -20,7 +20,7 @@ function embedsend(){
     .addField("Current Nickname", nickname, true)
     .addField("User ID", userid, true)
     .addField("Discriminator", discrim, true)
-    .addField("Joined", joined, true)
+    .addField("Joined", joined, false)
     .setFooter(`Info on ${username} requested by ${message.author.username}`);
 
   if(args.length < 1){
@@ -30,12 +30,12 @@ function embedsend(){
     let messageid = guild.members.get(userid).lastMessageID
     if(!messageid){
       let lastseen = "N/A"
-      embed.addField("Last Seen", lastseen, true)
+      embed.addField("Last Seen", lastseen, false)
       embedsend()
     }else{
       message.channel.fetchMessage(messageid)
       .then((lastseen) => {
-        embed.addField("Last Seen", lastseen.createdAt, true)
+        embed.addField("Last Seen", lastseen.createdAt, false)
         embedsend()
       }).catch(console.log)
     }
