@@ -26,7 +26,7 @@ exports.run = (client, message, args, Discord) => {
   //Sets up and sends the embed.
   const embed = new Discord.RichEmbed()
     .setAuthor(`Muted: ${user.username}`)
-    .setColor(0x00AE86)
+    .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("Muted By: ", moderator, true)
     .addField("Reason: ", args.slice(1).join(" "), true)

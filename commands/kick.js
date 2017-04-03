@@ -21,7 +21,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
-          .setColor(0x00AE86)
+          .setColor(message.guild.member(client.user).highestRole.color)
           .setTimestamp(message.createdAt)
           .addField("User Kicked: ", kickeduser, true)
           .addField("Kicked By: ", message.author.username, true)

@@ -16,7 +16,7 @@ exports.run = (client, message, args, Discord) => {
 
   const embed = new Discord.RichEmbed()
     .addField("Command Reloaded", `${executor.username} reloaded "${args[0]}"`)
-    .setColor(0x00AE86);
+    .setColor(message.guild.member(client.user).highestRole.color);
 
   tgtchannel.sendEmbed(
     embed,

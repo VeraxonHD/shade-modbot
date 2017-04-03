@@ -26,7 +26,7 @@ exports.run = (client, message, args, Discord) => {
   //Sets up and sends the embed.
   const embed = new Discord.RichEmbed()
     .setAuthor(`Un-Muted:  ${user.username}`)
-    .setColor(0x00AE86)
+    .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("Un-Muted By: ", moderator, true)
     .setFooter("Automated Mod Logging");
