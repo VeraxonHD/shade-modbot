@@ -1,25 +1,43 @@
 exports.run = (client, message, args, Discord) => {
+
+function embedsend(){
+  message.channel.sendEmbed(
+    embed,
+  {disableEveryone: true })
+}
+
   var username = message.mentions.users.first().username
   var userid = message.mentions.users.first().id
   var guild = message.guild
-  var nickname = guild.members.get(userid).nickname
+  var nickname = guild.members.get(userid).displayName
   var discrim = message.mentions.users.first().discriminator
+  var joined = guild.members.get(userid).joinedAt
 
-  if(args.length < 1){
-    message.reply("Eos \`Error`\ - You must identify a user to list.")
-    .then(message=>message.react('❎'));
-  }else{
-  const embed = new Discord.RichEmbed()
-    .setColor(0x00AE86)
+  var embed = new Discord.RichEmbed()
+    .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("User info for", username, true)
     .addField("Current Nickname", nickname, true)
     .addField("User ID", userid, true)
     .addField("Discriminator", discrim, true)
+    .addField("Joined", joined, false)
     .setFooter(`Info on ${username} requested by ${message.author.username}`);
-    //sends the embed
-    message.channel.sendEmbed(
-      embed,
-    {disableEveryone: true })
-  }
-}
+
+  if(args.length < 1){
+    message.reply("Eos \`Error`\ - You must identify a user to list.")
+    .then(message=>message.react('❎'));
+  }else{
+    let messageid = guild.members.get(userid).lastMessageID
+    if(!messageid){
+      let lastseen = "N/A"
+      embed.addField("Last Seen", lastseen, false)
+      embedsend()
+    }else{
+      message.channel.fetchMessage(messageid)
+      .then((lastseen) => {
+        embed.addField("Last Seen", lastseen.createdAt, false)
+        embedsend()
+      }).catch(console.log)
+    }
+
+}}
