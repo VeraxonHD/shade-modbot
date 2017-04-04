@@ -29,10 +29,6 @@ client.on("message", message => {
   if (!message.content.startsWith(cfg.prefix)) return
   let guild = message.guild
   const tgtchannel = guild.channels.find('name', 'log-channel')
-  if(!tgtchannel){
-    guild.createChannel("log-channel", "text", )
-    .then(chanl => message.channel.sendMessage(`The target channel ${chanl} was created. Please set permissions as you wish.`))
-  }
 
   exports.noPermReact = () => {
     return message.channel.sendMessage(`Eos - \`Error\` - You do not have permission to perform that command.`)
