@@ -10,14 +10,15 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  if(!guild.members.get(message.author).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
+  if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
 
   //Removes the muted role and replaces it with the normal role (temp)
   guild.member(user).removeRole(mutedRole)
   guild.member(user).addRole("292955645513170944")
 
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` Dear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+  user.sendMessage(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+    .then(message=>message.react('ℹ️'));
 
   //Notifies the moderator
   message.channel.sendMessage("Eos \`Success`\ - User un-muted successfully.")
@@ -26,7 +27,7 @@ exports.run = (client, message, args, Discord) => {
   //Sets up and sends the embed.
   const embed = new Discord.RichEmbed()
     .setAuthor(`Un-Muted:  ${user.username}`)
-    .setColor(0x00AE86)
+    .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("Un-Muted By: ", moderator, true)
     .setFooter("Automated Mod Logging");

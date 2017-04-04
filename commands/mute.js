@@ -10,14 +10,14 @@ exports.run = (client, message, args, Discord) => {
   // The log channel
   const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
-  if(!guild.members.get(message.author).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
+  if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
   //Removes all roles and replaces them with the muted role
   guild.member(user).setRoles([])
   guild.member(user).addRole(mutedRole)
 
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` Dear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
+  user.sendMessage(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
 
   //Notifies the moderator
   message.channel.sendMessage("Eos \`Success`\ - User muted successfully.")
@@ -26,7 +26,7 @@ exports.run = (client, message, args, Discord) => {
   //Sets up and sends the embed.
   const embed = new Discord.RichEmbed()
     .setAuthor(`Muted: ${user.username}`)
-    .setColor(0x00AE86)
+    .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("Muted By: ", moderator, true)
     .addField("Reason: ", args.slice(1).join(" "), true)
