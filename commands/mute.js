@@ -17,7 +17,7 @@ exports.run = (client, message, args, Discord) => {
   guild.member(user).addRole(mutedRole)
 
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` Dear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
+  user.sendMessage(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
 
   //Notifies the moderator
   message.channel.sendMessage("Eos \`Success`\ - User muted successfully.")

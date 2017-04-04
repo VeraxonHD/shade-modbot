@@ -17,7 +17,8 @@ exports.run = (client, message, args, Discord) => {
   guild.member(user).addRole("292955645513170944")
 
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` Dear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+  user.sendMessage(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+    .then(message=>message.react('ℹ️'));
 
   //Notifies the moderator
   message.channel.sendMessage("Eos \`Success`\ - User un-muted successfully.")
