@@ -13,7 +13,7 @@ exports.run = (client, message, args, Discord) => {
     .addField("Tag", "Creates/Deletes/Views a tag.\nRequires 'MANAGE_MESSAGES' permissions to create/delete.\nUsage: !tag <create|delete|{tagname}> <tagname> {content}", true)
     .setFooter("For more help, see github wiki.");
     //sends the embed
-    tgtchannel.sendEmbed(
+    message.channel.sendEmbed(
       embed,
     {disableEveryone: true })
       .then(message=>message.react('ℹ️'));
