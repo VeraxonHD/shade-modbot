@@ -13,7 +13,7 @@ exports.run = (client, message, args, Discord) => {
   if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
   //Removes all roles and replaces them with the muted role
-  guild.member(user).setRoles([])
+  //guild.member(user).setRoles([])
   function addmute(){
     guild.member(user).addRole(mutedRole)
   }
