@@ -14,7 +14,6 @@ exports.run = (client, message, args, Discord) => {
 
   //Removes the muted role and replaces it with the normal role (temp)
   guild.member(user).removeRole(mutedRole)
-  //guild.member(user).addRole("292955645513170944")
 
   //Notifies the user
   user.sendMessage(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
