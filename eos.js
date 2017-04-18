@@ -5,6 +5,7 @@ const fs = require("fs");
 const sql = require('sqlite');
 sql.open('./tags.sqlite');
 
+
 //logs in using token
 client.login(cfg.token);
 
@@ -13,6 +14,35 @@ client.on('ready', () => {
   console.log('Eos Online.');
   console.log("Prefix is: " + cfg.prefix)
 });
+
+client.on("guildMemberRemove", member => {
+  const embed = new Discord.RichEmbed()
+  let guild = member.guild
+  const tgtchannel = guild.channels.find('name', 'log-channel')
+
+
+  guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
+    embed.addField("User Left", member.user.username)
+    embed.setTimestamp(new Date())
+    embed.setColor(guild.member(client.user).highestRole.color)
+    embed.setThumbnail(member.user.avatarURL)
+  tgtchannel.sendEmbed(embed)
+})
+
+client.on("guildMemberAdd", member => {
+  const embed = new Discord.RichEmbed()
+  let guild = member.guild
+  const ruleschannel = guild.channels.find("name", "server-rules")
+  const tgtchannel = guild.channels.find('name', 'log-channel')
+
+  guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
+    embed.addField("User Joined", member.user.username)
+    embed.setTimestamp(new Date())
+    embed.setColor(guild.member(client.user).highestRole.color)
+    embed.setThumbnail(member.user.avatarURL)
+  tgtchannel.sendEmbed(embed)
+})
+
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -29,10 +59,6 @@ client.on("message", message => {
   if (!message.content.startsWith(cfg.prefix)) return
   let guild = message.guild
   const tgtchannel = guild.channels.find('name', 'log-channel')
-  if(!tgtchannel){
-    guild.createChannel("log-channel", "text", )
-    .then(chanl => message.channel.sendMessage(`The target channel ${chanl} was created. Please set permissions as you wish.`))
-  }
 
   exports.noPermReact = () => {
     return message.channel.sendMessage(`Eos - \`Error\` - You do not have permission to perform that command.`)

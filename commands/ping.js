@@ -1,4 +1,4 @@
 exports.run = (client, message, args) => {
-  //foobar?
-  message.channel.sendMessage("pong!").catch(console.error)
-}
+  	let time = Date.now();
+  	message.channel.sendMessage(`Pong! \`${Date.now() - time}ms\``).then(console.log())
+  }

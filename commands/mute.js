@@ -12,10 +12,10 @@ exports.run = (client, message, args, Discord) => {
 
   if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
-  //Removes all roles and replaces them with the muted role
-  guild.member(user).setRoles([])
-  guild.member(user).addRole(mutedRole)
-
+  function addmute(){
+    guild.member(user).addRole(mutedRole)
+  }
+  setTimeout(addmute, 500)
   //Notifies the user
   user.sendMessage(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
 
