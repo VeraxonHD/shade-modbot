@@ -11,6 +11,7 @@ exports.run = (client, message, args, Discord) => {
     .addField("Mute", "Mutes a user.\nRequires 'MANAGE_MESSAGES' permissions and a reason.", true)
     .addField("Warn", "Adds a warning to a user's file.\nRequires 'KICK_MEMBERS' permissions and a reason. 3 warns = auto-kick.", true)
     .addField("Tag", "Creates/Deletes/Views a tag.\nRequires 'MANAGE_MESSAGES' permissions to create/delete.\nUsage: !tag <create|delete|{tagname}> <tagname> {content}", true)
+    .addField("Google", "Searches Google and lists the top 3 results.\nUsage: !tag <query>", true)
     .setFooter("For more help, see github wiki.");
     //sends the embed
     message.channel.sendEmbed(
