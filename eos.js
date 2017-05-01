@@ -3,8 +3,6 @@ const client = new Discord.Client();
 const cfg = require("./config.json");
 const fs = require("fs");
 const sql = require('sqlite');
-sql.open('./tags.sqlite');
-
 
 //logs in using token
 client.login(cfg.token);
@@ -56,9 +54,10 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
+  sql.open("logchannels.sqlite")
   if (!message.content.startsWith(cfg.prefix)) return
   let guild = message.guild
-  const tgtchannel = guild.channels.find('name', 'log-channel')
+  //new tgtchannel finder here
 
   exports.noPermReact = () => {
     return message.channel.sendMessage(`Eos - \`Error\` - You do not have permission to perform that command.`)

@@ -1,10 +1,10 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
 var react = require("../eos.js")
 var sql = require("sqlite")
 sql.open('./warn.sqlite');
 const guild = message.guild
 var target = message.mentions.users.first()
-const tgtchannel = message.guild.channels.find('name', 'log-channel')
+//const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
 if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return react.noPermReact()}
 if(args.length >= 2){
@@ -26,9 +26,13 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
       message.guild.member(target).kick()
       message.channel.sendMessage(`Eos \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
         .then(message=>message.react('ℹ️'));
-      tgtchannel.sendMessage(`Eos \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
-        .then(message=>message.react('ℹ️'));
-
+        sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+            var tgtchannel = message.guild.channels.get(row.channelid)
+            tgtchannel.sendMessage(`Eos \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
+            .then(message=>message.react('ℹ️'));
+        }).catch(err => {
+          console.log(err)
+        })
       .catch(console.log())
     }
    }
@@ -51,9 +55,15 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
   .addField("Reason: ", args.slice(1).join(" "), true)
   .setFooter("Automated Mod Logging");
 
-  tgtchannel.sendEmbed(
-    embed,
-  {disableEveryone: true })
+  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+      var tgtchannel = message.guild.channels.get(row.channelid)
+      tgtchannel.sendEmbed(
+        embed,
+      {disableEveryone: true })
+  }).catch(err => {
+    console.log(err)
+  })
+
 }else{
   return message.reply("Eos \`Error`\ - You must add a reason!")
         .then(message=>message.react('❎'));

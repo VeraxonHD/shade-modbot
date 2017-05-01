@@ -1,4 +1,4 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
   var react = require("../eos.js")
   var guild = message.guild
   //The ID for the muted role
@@ -8,7 +8,7 @@ exports.run = (client, message, args, Discord) => {
   //The moderator's username
   let moderator = message.author.username
   // The log channel
-  const tgtchannel = message.guild.channels.find('name', 'log-channel')
+  //const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
   if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
 
@@ -30,8 +30,14 @@ exports.run = (client, message, args, Discord) => {
     .setTimestamp(message.createdAt)
     .addField("Un-Muted By: ", moderator, true)
     .setFooter("Automated Mod Logging");
-  console.log(embed.fields)
-  tgtchannel.sendEmbed(
-  embed,
-  {disableEveryone: true })
+
+  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+      var tgtchannel = message.guild.channels.get(row.channelid)
+      tgtchannel.sendEmbed(
+        embed,
+      {disableEveryone: true })
+  }).catch(err => {
+    console.log(err)
+  })
+
   }

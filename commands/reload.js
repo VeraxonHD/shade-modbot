@@ -1,6 +1,7 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
   const react = require("../eos.js")
-  const tgtchannel = message.guild.channels.find('name', 'log-channel')
+  var guild = message.guild
+
   if(message.author.id !== "213040107278696450"){return react.noPermReact()
   }else{
   // deletes the cache of the command and then re-loads the code.
@@ -18,7 +19,14 @@ exports.run = (client, message, args, Discord) => {
     .addField("Command Reloaded", `${executor.username} reloaded "${args[0]}"`)
     .setColor(message.guild.member(client.user).highestRole.color);
 
-  tgtchannel.sendEmbed(
-    embed,
-  {disableEveryone: true })
+
+    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+        var tgtchannel = message.guild.channels.get(row.channelid)
+        tgtchannel.sendEmbed(
+          embed,
+        {disableEveryone: true })
+    }).catch(err => {
+      console.log(err)
+    })
+
 }};
