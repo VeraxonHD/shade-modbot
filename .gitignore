@@ -4,3 +4,4 @@ tags.sqlite
 warn.sqlite
 events
 logchannels.sqlite
+commands/prune-old.js
