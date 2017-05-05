@@ -16,32 +16,87 @@ client.on('ready', () => {
 client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
-  const tgtchannel = guild.channels.find('name', 'log-channel')
-
 
   guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
-  tgtchannel.sendEmbed(embed)
+
+  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+      var tgtchannel = message.guild.channels.get(row.channelid)
+      tgtchannel.sendEmbed(
+        embed,
+      {disableEveryone: true })
+  }).catch(err => {
+    console.log(err)
+  })
 })
 
 client.on("guildMemberAdd", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
   const ruleschannel = guild.channels.find("name", "server-rules")
-  const tgtchannel = guild.channels.find('name', 'log-channel')
 
   guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
     embed.addField("User Joined", member.user.username)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
-  tgtchannel.sendEmbed(embed)
+
+    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+        var tgtchannel = message.guild.channels.get(row.channelid)
+        tgtchannel.sendEmbed(
+          embed,
+        {disableEveryone: true })
+    }).catch(err => {
+      console.log(err)
+    })
 })
 
+client.on("messageDelete", message => {
+  const guild = message.guild
+  const embed = new Discord.RichEmbed()
+    .setAuthor("Message Deleted")
+    .addField("Message Author", `${message.author.username}#${message.author.discriminator}`, false)
+    .addField("Message Content", message.content, false)
+    .setColor(guild.member(client.user).highestRole.color)
+    .setThumbnail(message.author.avatarURL)
+    .setTimestamp(new Date());
 
+    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+        var tgtchannel = guild.channels.get(row.channelid)
+        tgtchannel.sendEmbed(
+          embed,
+        {disableEveryone: true })
+    }).catch(err => {
+      console.log(err)
+    })
+})
+
+/*
+//bad request to fix.
+client.on("messageUpdate", (oldMessage, newMessage) => {
+  const guild = newMessage.guild
+  const embed = new Discord.RichEmbed()
+    .setAuthor("Message Edited")
+    .addField("Message Author", `${newMessage.author.username}#${newMessage.author.discriminator}`, false)
+    .addField("Old Message Content", oldMessage.content, false)
+    .addField("New Message Content", newMessage.content, false)
+    .setColor(guild.member(client.user).highestRole.color)
+    .setThumbnail(newMessage.author.avatarURL)
+    .setTimestamp(new Date());
+
+    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+        var tgtchannel = guild.channels.get(row.channelid)
+        tgtchannel.sendEmbed(
+          embed,
+        {disableEveryone: true })
+    }).catch(err => {
+      console.log(err)
+    })
+})
+*/
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
@@ -81,5 +136,5 @@ client.on("message", message => {
   }
 });
 process.on("unhandledRejection", err => {
-  console.error("Uncaught Promise Error: \n" + err.stack);
+  console.error("Uncaught Promise Error: \n", err);
 });
