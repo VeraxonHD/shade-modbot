@@ -24,7 +24,7 @@ client.on("guildMemberRemove", member => {
     embed.setThumbnail(member.user.avatarURL)
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      var tgtchannel = message.guild.channels.get(row.channelid)
+      var tgtchannel = guild.channels.get(row.channelid)
       tgtchannel.send({embed})
   }).catch(err => {
     console.log(err)
@@ -43,7 +43,7 @@ client.on("guildMemberAdd", member => {
     embed.setThumbnail(member.user.avatarURL)
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-        var tgtchannel = message.guild.channels.get(row.channelid)
+        var tgtchannel = guild.channels.get(row.channelid)
         tgtchannel.send({embed})
     }).catch(err => {
       console.log(err)
