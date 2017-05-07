@@ -14,8 +14,6 @@ exports.run = (client, message, args, Discord) => {
     .addField("Google", "Searches Google and lists the top 3 results.\nUsage: !google <query>", true)
     .setFooter("For more help, see github wiki.");
     //sends the embed
-    message.channel.sendEmbed(
-      embed,
-    {disableEveryone: true })
+    message.channel.send({embed})
       .then(message=>message.react('ℹ️'));
 }
