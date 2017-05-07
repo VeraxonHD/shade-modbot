@@ -74,9 +74,14 @@ client.on("messageDelete", message => {
     })
 })
 
-/*
-//bad request to fix.
+
+//idk why but keeps repeating?
 client.on("messageUpdate", (oldMessage, newMessage) => {
+  if(oldMessage.content.length == 0){
+    return;
+  }else if(newMessage.content.length == 0){
+    return;
+  }
   const guild = newMessage.guild
   const embed = new Discord.RichEmbed()
     .setAuthor("Message Edited")
@@ -85,7 +90,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
     .addField("New Message Content", newMessage.content, false)
     .setColor(guild.member(client.user).highestRole.color)
     .setThumbnail(newMessage.author.avatarURL)
-    .setTimestamp(new Date());
+    .setTimestamp(new Date())
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
         var tgtchannel = guild.channels.get(row.channelid)
@@ -96,7 +101,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
       console.log(err)
     })
 })
-*/
+
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
