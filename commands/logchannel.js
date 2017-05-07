@@ -7,10 +7,10 @@ exports.run = (client, message, args, Discord, sql) => {
   if(args[0] == "get"){
         sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
           if(!row){
-            message.channel.sendMessage("Eos `Error` - No log channel found. Try setting it first!")
+            message.channel.send("Eos `Error` - No log channel found. Try setting it first!")
           }else{
             const tgtchannel = message.guild.channels.get(row.channelid)
-            tgtchannel.sendMessage("this is the log channel")
+            tgtchannel.send("this is the log channel")
         }
       }).catch(err => {console.error(err)})
 
@@ -23,6 +23,6 @@ exports.run = (client, message, args, Discord, sql) => {
       sql.run('INSERT INTO channels (serverid, channelid) VALUES (?, ?)', [serverid, args[1]]).catch(console.log("in catch"))
     })
   }else{
-    message.channel.sendMessage("Eos `Error` - Please define if you wish to set or get the log channel.")
+    message.channel.send("Eos `Error` - Please define if you wish to set or get the log channel.")
   }
 }

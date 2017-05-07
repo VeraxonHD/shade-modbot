@@ -17,10 +17,10 @@ exports.run = (client, message, args, Discord, sql) => {
   }
   setTimeout(addmute, 500)
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
+  user.send(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
 
   //Notifies the moderator
-  message.channel.sendMessage("Eos \`Success`\ - User muted successfully.")
+  message.channel.send("Eos \`Success`\ - User muted successfully.")
   .then(message=>message.react('✅'));
 
   //Sets up and sends the embed.
@@ -35,9 +35,7 @@ exports.run = (client, message, args, Discord, sql) => {
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
       var tgtchannel = message.guild.channels.get(row.channelid)
-      tgtchannel.sendEmbed(
-        embed,
-      {disableEveryone: true })
+      tgtchannel.send({embed})
   }).catch(err => {
     console.log(err)
   })

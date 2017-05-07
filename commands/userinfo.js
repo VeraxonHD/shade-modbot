@@ -1,9 +1,7 @@
 exports.run = (client, message, args, Discord) => {
 
 function embedsend(){
-  message.channel.sendEmbed(
-    embed,
-  {disableEveryone: true })
+  message.channel.send({embed})
 }
 
   var username = message.mentions.users.first().username

@@ -17,7 +17,7 @@ client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
 
-  guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
+  guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
@@ -25,9 +25,7 @@ client.on("guildMemberRemove", member => {
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
       var tgtchannel = message.guild.channels.get(row.channelid)
-      tgtchannel.sendEmbed(
-        embed,
-      {disableEveryone: true })
+      tgtchannel.send({embed})
   }).catch(err => {
     console.log(err)
   })
@@ -38,7 +36,7 @@ client.on("guildMemberAdd", member => {
   let guild = member.guild
   const ruleschannel = guild.channels.find("name", "server-rules")
 
-  guild.defaultChannel.sendMessage(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
+  guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
     embed.addField("User Joined", member.user.username)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
@@ -46,9 +44,7 @@ client.on("guildMemberAdd", member => {
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
         var tgtchannel = message.guild.channels.get(row.channelid)
-        tgtchannel.sendEmbed(
-          embed,
-        {disableEveryone: true })
+        tgtchannel.send({embed})
     }).catch(err => {
       console.log(err)
     })
@@ -66,16 +62,12 @@ client.on("messageDelete", message => {
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
         var tgtchannel = guild.channels.get(row.channelid)
-        tgtchannel.sendEmbed(
-          embed,
-        {disableEveryone: true })
+        tgtchannel.send({embed})
     }).catch(err => {
       console.log(err)
     })
 })
 
-
-//idk why but keeps repeating?
 client.on("messageUpdate", (oldMessage, newMessage) => {
   if(oldMessage.content.length == 0){
     return;
@@ -94,9 +86,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
         var tgtchannel = guild.channels.get(row.channelid)
-        tgtchannel.sendEmbed(
-          embed,
-        {disableEveryone: true })
+        tgtchannel.send({embed})
     }).catch(err => {
       console.log(err)
     })
@@ -120,7 +110,7 @@ client.on("message", message => {
   //new tgtchannel finder here
 
   exports.noPermReact = () => {
-    return message.channel.sendMessage(`Eos - \`Error\` - You do not have permission to perform that command.`)
+    return message.channel.send(`Eos - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
   exports.successReact = () => {

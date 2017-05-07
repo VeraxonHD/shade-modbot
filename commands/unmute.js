@@ -16,11 +16,11 @@ exports.run = (client, message, args, Discord, sql) => {
   guild.member(user).removeRole(mutedRole)
 
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+  user.send(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
     .then(message=>message.react('ℹ️'));
 
   //Notifies the moderator
-  message.channel.sendMessage("Eos \`Success`\ - User un-muted successfully.")
+  message.channel.send("Eos \`Success`\ - User un-muted successfully.")
   .then(message=>message.react('✅'));
 
   //Sets up and sends the embed.
@@ -33,9 +33,7 @@ exports.run = (client, message, args, Discord, sql) => {
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
       var tgtchannel = message.guild.channels.get(row.channelid)
-      tgtchannel.sendEmbed(
-        embed,
-      {disableEveryone: true })
+      tgtchannel.send({embed})
   }).catch(err => {
     console.log(err)
   })
