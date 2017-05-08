@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
           var msgArray = messages.array()
           msgArray = msgArray.filter(m => m.author.id === target.id)
           msgArray.length = messagecount + 1
-          msgArray.map(m => m.delete().catch(console.error))
+          message.channel.bulkDelete(msgArray)
         })
     message.channel.send(`Eos \`Success\` - **${messagecount}** messages from user **${target}** deleted successfuly!`)
       .then(message=>message.react('✅'))
