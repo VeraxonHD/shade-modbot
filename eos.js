@@ -19,6 +19,8 @@ client.on("guildMemberRemove", member => {
 
   guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
+    embed.addField("User Discriminator", member.user.discriminator, true)
+    embed.addField("User ID", member.user.id)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
@@ -37,7 +39,10 @@ client.on("guildMemberAdd", member => {
   const ruleschannel = guild.channels.find("name", "server-rules")
 
   guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
-    embed.addField("User Joined", member.user.username)
+    embed.addField("User Joined", member.user.username, true)
+    embed.addField("User Discriminator", member.user.discriminator, true)
+    embed.addField("User ID", member.user.id)
+    embed.addField("User account creation date", member.user.createdAt)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
