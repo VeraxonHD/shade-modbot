@@ -1,0 +1,12 @@
+{
+  "name": "Eos Modbot",
+  "description": "A moderation bot by Vex for Discord",
+  "version": "3.2.0",
+  "main": "eos.js",
+  "scripts": {
+    "start": "eos.js"
+  },
+  "dependencies": {
+    "discord.js": "11.1.0"
+  }
+}
