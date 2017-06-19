@@ -9,22 +9,27 @@ client.login(cfg.token);
 
 //sends ready echo to console
 client.on('ready', () => {
-  console.log('Eos Online.');
+  console.log('Eos Booting. Started at ' + new Date());
   console.log("Prefix is: " + cfg.prefix)
+  sql.open('eos-database.sqlite');
+  console.log("Databases opened")
+  console.log("Eos is R E A D Y. Ended at " + new Date())
 });
 
 client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
 
-  guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
+  //guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
+    embed.addField("User Discriminator", member.user.discriminator, true)
+    embed.addField("User ID", member.user.id)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      var tgtchannel = message.guild.channels.get(row.channelid)
+      var tgtchannel = guild.channels.get(row.channelid)
       tgtchannel.send({embed})
   }).catch(err => {
     console.log(err)
@@ -36,14 +41,17 @@ client.on("guildMemberAdd", member => {
   let guild = member.guild
   const ruleschannel = guild.channels.find("name", "server-rules")
 
-  guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
-    embed.addField("User Joined", member.user.username)
+  //guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
+    embed.addField("User Joined", member.user.username, true)
+    embed.addField("User Discriminator", member.user.discriminator, true)
+    embed.addField("User ID", member.user.id)
+    embed.addField("User account creation date", member.user.createdAt)
     embed.setTimestamp(new Date())
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-        var tgtchannel = message.guild.channels.get(row.channelid)
+        var tgtchannel = guild.channels.get(row.channelid)
         tgtchannel.send({embed})
     }).catch(err => {
       console.log(err)
@@ -55,10 +63,19 @@ client.on("messageDelete", message => {
   const embed = new Discord.RichEmbed()
     .setAuthor("Message Deleted")
     .addField("Message Author", `${message.author.username}#${message.author.discriminator}`, false)
-    .addField("Message Content", message.content, false)
     .setColor(guild.member(client.user).highestRole.color)
     .setThumbnail(message.author.avatarURL)
     .setTimestamp(new Date());
+
+    if(!message.content){
+  		embed.addField("Message Content", "None", false)
+  	}else{
+  		if(message.content.length >= 1023){
+  			embed.addField("Message Content", "Too long to post", false)
+  		}else{
+  			embed.addField("Message Content", message.content, false)
+  		}
+  	}
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
         var tgtchannel = guild.channels.get(row.channelid)
@@ -104,7 +121,6 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
-  sql.open("logchannels.sqlite")
   if (!message.content.startsWith(cfg.prefix)) return
   let guild = message.guild
   //new tgtchannel finder here
@@ -125,7 +141,30 @@ client.on("message", message => {
 
   try {
     let commandFile = require(`./commands/${command}.js`);
-    commandFile.run(client, message, args, Discord, sql, guild);
+
+    var serverid = guild.id;
+
+    sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
+      if(!row){
+        message.channel.send("There is no log channel for this server. Please set one up and edit the channel topic.");
+      }else{
+        var logchannel = message.guild.channels.get(row.channelid);
+        var topicString = logchannel.topic;
+
+        if(!topicString){
+          message.channel.send("There is no config information to be displayed. Please set up config information in the topic of the log channel.");
+        }
+
+        let configuration = topicString.split(";");
+          if(configuration.includes(command)){
+            message.channel.send("This command has been disabled on this server by an administrator. DM them if you think this is an error.")
+            return;
+          }else{
+            commandFile.run(client, message, args, Discord, sql, guild);
+          }
+        }
+    })
+    //commandFile.run(client, message, args, Discord, sql, guild);
   } catch (err) {
     console.error(err);
   }
