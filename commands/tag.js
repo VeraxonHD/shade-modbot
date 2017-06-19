@@ -1,8 +1,6 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
 var react = require("../eos.js")
 var guild = message.guild
-var sql = require("sqlite")
-sql.open('./tags.sqlite');
 
   if (args[0] == "create") {
     var commandname = args[1]
@@ -42,7 +40,9 @@ sql.open('./tags.sqlite');
 
     .catch((err) => {
       console.error(err)
-      message.channel.send("Error - Something happened but I'm too lazy to put a command thing cos the rest isn't even finished yet.")})
+      message.channel.send("Error - Could not delete message.")
+    .then(message=>message.react('❎'))
+  })
 
   }else{
     var commandname = args[0]
@@ -52,7 +52,8 @@ sql.open('./tags.sqlite');
       message.channel.send(`Tag \`${commandname}\` - ${row.action}`)
     }).catch((err) => {
       console.error(err)
-      message.channel.send("Error - Something happened but I'm too lazy to put a command thing cos the rest isn't even finished yet.")
+      message.channel.send("Error - Could not show tag. Try re-creating it!")
+      .then(message=>message.react('❎'))
     });
   }
 }

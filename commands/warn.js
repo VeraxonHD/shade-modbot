@@ -1,7 +1,5 @@
 exports.run = (client, message, args, Discord, sql) => {
 var react = require("../eos.js")
-var sql = require("sqlite")
-sql.open('./warn.sqlite');
 const guild = message.guild
 var target = message.mentions.users.first()
 //const tgtchannel = message.guild.channels.find('name', 'log-channel')
