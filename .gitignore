@@ -1,5 +1,5 @@
 node_modules
-config.json
+aconfig.json
 tags.sqlite
 warn.sqlite
 events
