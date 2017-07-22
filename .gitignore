@@ -1,6 +1,4 @@
 node_modules
-config.json
-tags.sqlite
-warn.sqlite
-events/memberJoin.js
-events/memberLeave.js
+commands/disabled
+start.bat
+.env

@@ -1,8 +1,7 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
   var react = require("../eos.js")
   var guild = message.guild
   //The targeted channel (aka mod log channel)
-  const tgtchannel = message.guild.channels.find('name', 'log-channel')
   //the user to be banned
   var banneduser = message.mentions.users.first()
   //saves the ban perms in a compact variable
@@ -18,7 +17,7 @@ exports.run = (client, message, args, Discord) => {
         //send the confirmation message, add a react and ban the user
         if (args.length >= 2){
         message.guild.member(banneduser).ban()
-        .then(message.channel.sendMessage("Eos \`Success`\ - User banned successfully.")
+        .then(message.channel.send("Eos \`Success`\ - User banned successfully.")
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
@@ -29,9 +28,13 @@ exports.run = (client, message, args, Discord) => {
           .addField("Reason: ", args.slice(1).join(" "), true)
           .setFooter("Automated Mod Logging");
           //sends the embed
-          tgtchannel.sendEmbed(
-            embed,
-          {disableEveryone: true })
+          sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+              var tgtchannel = message.guild.channels.get(row.channelid)
+              tgtchannel.send({embed})
+          }).catch(err => {
+            console.log(err)
+          })
+
         }else{
           message.reply("Eos \`Error`\ - You must add a reason!")
           .then(message=>message.react('❎'));

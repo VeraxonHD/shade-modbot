@@ -1,4 +1,4 @@
-exports.run = (client, message, args, Discord) => {
+exports.run = (client, message, args, Discord, sql) => {
   var react = require("../eos.js")
   var guild = message.guild
   //The ID for the muted role
@@ -8,7 +8,7 @@ exports.run = (client, message, args, Discord) => {
   //The moderator's username
   let moderator = message.author.username
   // The log channel
-  const tgtchannel = message.guild.channels.find('name', 'log-channel')
+  //const tgtchannel = message.guild.channels.find('name', 'log-channel')
 
   if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
@@ -17,10 +17,10 @@ exports.run = (client, message, args, Discord) => {
   }
   setTimeout(addmute, 500)
   //Notifies the user
-  user.sendMessage(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
+  user.send(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\`. Please read the rules and try not to break them again.`)
 
   //Notifies the moderator
-  message.channel.sendMessage("Eos \`Success`\ - User muted successfully.")
+  message.channel.send("Eos \`Success`\ - User muted successfully.")
   .then(message=>message.react('✅'));
 
   //Sets up and sends the embed.
@@ -32,9 +32,14 @@ exports.run = (client, message, args, Discord) => {
     .addField("Reason: ", args.slice(1).join(" "), true)
     .setFooter("Automated Mod Logging");
   console.log(embed.fields)
-  tgtchannel.sendEmbed(
-    embed,
-  {disableEveryone: true })//.catch(console.error)
+
+  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+      var tgtchannel = message.guild.channels.get(row.channelid)
+      tgtchannel.send({embed})
+  }).catch(err => {
+    console.log(err)
+  })
+
   }else{
     message.reply("Eos \`Error`\ - You must add a reason!")
     .then(message=>message.react('❎'));
