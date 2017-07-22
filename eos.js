@@ -20,7 +20,6 @@ client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
 
-  //guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
     embed.addField("User Discriminator", member.user.discriminator, true)
     embed.addField("User ID", member.user.id)
