@@ -5,7 +5,7 @@ const fs = require("fs");
 const sql = require('sqlite');
 
 //logs in using token
-client.login(cfg.token);
+client.login(process.env.TOKEN);
 
 //sends ready echo to console
 client.on('ready', () => {
@@ -107,6 +107,53 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
     }).catch(err => {
       console.log(err)
     })
+})
+
+//Starboard message reaction
+client.on("messageReactionAdd", (messageReaction, user) =>{
+
+  if(messageReaction.emoji.toString != "⭐"){return;}
+
+  var serverid = messageReaction.message.guild.id
+
+  sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
+    if(!row){
+      message.channel.send("There is no log channel for this server. Please set one up and edit the channel topic.");
+    }else{
+      var logchannel = messageReaction.message.guild.channels.get(row.channelid);
+      var topicString = logchannel.topic;
+
+      if(!topicString){
+        message.channel.send("There is no config information to be displayed. Please set up config information in the topic of the log channel.");
+      }
+
+      let configuration = topicString.split(";");
+        if(configuration.includes("starboard")){
+          //messageReaction.message.channel.send("The starboard has been disabled by an administrator. DM them if you think this is an error.")
+          return;
+        }else{
+          //if(messageReaction.emoji.toString != "⭐"){return;}
+          //if(messageReaction.me = true){return;}
+
+          let msg = messageReaction.message;
+          let guild = msg.guild;
+          let userid = msg.author.id;
+          let content = msg.content;
+            if(!content){content = "No Content (Could be an image or an embed?)"}
+          let starboardchan =  guild.channels.find("name", "starboard");
+            if(!starboardchan){starboardchan = logchannel;}
+
+          const embed = new Discord.RichEmbed()
+            .setTimestamp(new Date())
+            .setAuthor("New Starred Post")
+            .addField(guild.members.get(userid).displayName, content)
+            .setColor([255, 172, 51])
+
+          starboardchan.send({embed})
+          //console.log(embed.fields)
+        }
+      }
+  })
 })
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.

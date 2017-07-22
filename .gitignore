@@ -1,7 +1,4 @@
 node_modules
-aconfig.json
-tags.sqlite
-warn.sqlite
-events
-logchannels.sqlite
-commands/prune-old.js
+commands/disabled
+start.bat
+.env
