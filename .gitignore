@@ -1,9 +1,4 @@
 node_modules
-config.json
-tags.sqlite
-warn.sqlite
-events
-eos-database.sqlite
-commands/prune-old.js
-package.json
-ProcFile
+commands/disabled
+start.bat
+.env

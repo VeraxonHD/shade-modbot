@@ -8,5 +8,16 @@
   },
   "dependencies": {
     "discord.js": "11.1.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VeraxonHD/eos-modbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VeraxonHD/eos-modbot/issues"
+  },
+  "homepage": "https://github.com/VeraxonHD/eos-modbot#readme"
 }

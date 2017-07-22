@@ -5,7 +5,7 @@ const fs = require("fs");
 const sql = require('sqlite');
 
 //logs in using token
-client.login(cfg.token);
+client.login(process.env.TOKEN);
 
 //sends ready echo to console
 client.on('ready', () => {
@@ -112,6 +112,8 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 //Starboard message reaction
 client.on("messageReactionAdd", (messageReaction, user) =>{
 
+  if(messageReaction.emoji.toString != "⭐"){return;}
+
   var serverid = messageReaction.message.guild.id
 
   sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
@@ -127,7 +129,7 @@ client.on("messageReactionAdd", (messageReaction, user) =>{
 
       let configuration = topicString.split(";");
         if(configuration.includes("starboard")){
-          messageReaction.message.channel.send("The starboard has been disabled by an administrator. DM them if you think this is an error.")
+          //messageReaction.message.channel.send("The starboard has been disabled by an administrator. DM them if you think this is an error.")
           return;
         }else{
           //if(messageReaction.emoji.toString != "⭐"){return;}
@@ -137,7 +139,7 @@ client.on("messageReactionAdd", (messageReaction, user) =>{
           let guild = msg.guild;
           let userid = msg.author.id;
           let content = msg.content;
-            if(!content){return;}
+            if(!content){content = "No Content (Could be an image or an embed?)"}
           let starboardchan =  guild.channels.find("name", "starboard");
             if(!starboardchan){starboardchan = logchannel;}
 
