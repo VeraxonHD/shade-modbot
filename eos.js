@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const cfg = require("./config.json");
 const fs = require("fs");
 const sql = require('sqlite');
+const prefix = (process.env.PREFIX)
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -20,7 +21,6 @@ client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
   let guild = member.guild
 
-  //guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has left ${member.guild.name}.`)
     embed.addField("User Left", member.user.username)
     embed.addField("User Discriminator", member.user.discriminator, true)
     embed.addField("User ID", member.user.id)
@@ -168,7 +168,7 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
-  if (!message.content.startsWith(cfg.prefix)) return
+  if (!message.content.startsWith(prefix)) return
   let guild = message.guild
   //new tgtchannel finder here
 
@@ -181,7 +181,7 @@ client.on("message", message => {
   }
 
   let command = message.content.split(" ")[0];
-  command = command.slice(cfg.prefix.length);
+  command = command.slice(prefix.length);
 
   let args = message.content.split(" ").slice(1);
   // The list of if/else is replaced with those simple 2 lines:
