@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const cfg = require("./config.json");
 const fs = require("fs");
 const sql = require('sqlite');
+const prefix = (process.env.PREFIX)
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -167,7 +168,7 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
-  if (!message.content.startsWith(cfg.prefix)) return
+  if (!message.content.startsWith(prefix)) return
   let guild = message.guild
   //new tgtchannel finder here
 
@@ -180,7 +181,7 @@ client.on("message", message => {
   }
 
   let command = message.content.split(" ")[0];
-  command = command.slice(cfg.prefix.length);
+  command = command.slice(prefix.length);
 
   let args = message.content.split(" ").slice(1);
   // The list of if/else is replaced with those simple 2 lines:
