@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const cfg = require("./config.json");
 const fs = require("fs");
 const sql = require('sqlite');
 const prefix = (process.env.PREFIX)
@@ -11,7 +10,7 @@ client.login(process.env.TOKEN);
 //sends ready echo to console
 client.on('ready', () => {
   console.log('Eos Booting. Started at ' + new Date());
-  console.log("Prefix is: " + cfg.prefix)
+  console.log("Prefix is: " + prefix)
   sql.open('eos-database.sqlite');
   console.log("Databases opened")
   console.log("Eos is R E A D Y. Ended at " + new Date())
