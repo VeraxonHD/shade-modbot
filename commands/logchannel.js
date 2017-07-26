@@ -16,11 +16,11 @@ exports.run = (client, message, args, Discord, sql) => {
 
   }else if(args[0] == "set"){
     sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
-      sql.run(`DELETE FROM channels WHERE serverid = "${serverid}"`).catch(console.log("delete"))
-      sql.run('INSERT INTO channels (serverid, channelid) VALUES (?, ?)', [serverid, args[1]]).catch(console.log("insert"))
+      sql.run(`DELETE FROM channels WHERE serverid = "${serverid}"`)
+      sql.run('INSERT INTO channels (serverid, channelid) VALUES (?, ?)', [serverid, args[1]])
     }).catch(err => {
       console.error(err)
-      sql.run('INSERT INTO channels (serverid, channelid) VALUES (?, ?)', [serverid, args[1]]).catch(console.log("in catch"))
+      sql.run('INSERT INTO channels (serverid, channelid) VALUES (?, ?)', [serverid, args[1]])
     })
   }else{
     message.channel.send("Eos `Error` - Please define if you wish to set or get the log channel.")
