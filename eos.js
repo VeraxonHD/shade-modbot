@@ -6,12 +6,11 @@ const prefix = (process.env.PREFIX)
 
 //logs in using token
 client.login(process.env.TOKEN);
-
+sql.open('eos-database.sqlite');
 //sends ready echo to console
 client.on('ready', () => {
   console.log('Eos Booting. Started at ' + new Date());
   console.log("Prefix is: " + prefix)
-  sql.open('eos-database.sqlite');
   console.log("Databases opened")
   console.log("Eos is R E A D Y. Ended at " + new Date())
 });
