@@ -1,8 +1,8 @@
 exports.run = (client, message, args, Discord) => {
 var react = require("../eos.js")
+var guild = message.guild;
 if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES") || message.author.id != "213040107278696450"){return react.noPermReact()};
 
-var guild = message.guild;
 
 var managerrole = guild.roles.find("name", "Poll Manager");
 
