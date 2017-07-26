@@ -45,7 +45,7 @@ const pollThumb = args[2]
 
       const resultsEmbed = new Discord.RichEmbed()
         .setColor(guild.member(client.user).highestRole.color)
-
+/*
       if(tickCount > crossCount){
         resultsEmbed.addField("Poll Verdict", "Majority voted for 'yes'.")
         //return botmsg.edit("**Poll Closed** \nThe ayes have it.");
@@ -56,6 +56,9 @@ const pollThumb = args[2]
         resultsEmbed.addField("Poll Verdict", "No majority was reached.")
         //return botmsg.edit("**Poll Closed** \nA majority was not reached in time.");
       }
+*/
+
+        .addField("Poll Closed", `Poll \`${args[0]}\` has closed.`)
       botmsg.edit({embed: resultsEmbed})
     }, pollTime);
   })
