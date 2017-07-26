@@ -43,15 +43,20 @@ const pollThumb = args[2]
       var tickCount = botmsg.reactions.get(encodeURIComponent('✅')).count;
       var crossCount = botmsg.reactions.get(encodeURIComponent('❎')).count;
 
+      const resultsEmbed = new Discord.RichEmbed()
+        .setColor(guild.member(client.user).highestRole.color)
+
       if(tickCount > crossCount){
-        return message.channel.send("The ayes have it.");
+        resultsEmbed.addField("Poll Verdict", "Majority voted for 'yes'.")
+        //return botmsg.edit("**Poll Closed** \nThe ayes have it.");
       }else if(crossCount > tickCount){
-        return message.channel.send("The nays have it.");
+        resultsEmbed.addField("Poll Verdict", "Majority voted for 'no'.")
+        //return botmsg.edit("**Poll Closed** \nThe nays have it.");
       }else{
-        return message.channel.send("A majority was not reached in time.");
+        resultsEmbed.addField("Poll Verdict", "No majority was reached.")
+        //return botmsg.edit("**Poll Closed** \nA majority was not reached in time.");
       }
-      /*console.log(tickCount);
-      console.log(crossCount);*/
-    }, pollTime); //900000
+      botmsg.edit({embed: resultsEmbed})
+    }, pollTime);
   })
 }
