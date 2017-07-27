@@ -188,6 +188,7 @@ client.on("message", message => {
     let commandFile = require(`./commands/${command}.js`);
 
     var serverid = guild.id;
+    if(command == "logchannel"){commandFile.run(client, message, args, Discord, sql, guild)}
 
     sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
       if(!row){
