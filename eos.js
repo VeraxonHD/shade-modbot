@@ -167,6 +167,7 @@ fs.readdir("./events/", (err, files) => {
 
 client.on("message", message => {
   if (!message.content.startsWith(prefix)) return
+  if (message.content.includes(process.env.TOKEN)){return ("This command's response contained a sensitive token which has been omitted.")}
   let guild = message.guild
   //new tgtchannel finder here
 
