@@ -4,18 +4,19 @@
   "version": "3.2.0",
   "main": "eos.js",
   "engines": {
-    "node" : "6.10.3"
+    "node": "6.10.3"
   },
   "scripts": {
     "start": "eos.js"
   },
   "dependencies": {
-    "discord.js": "11.1.0",
-    "sqlite": "2.8.0",
     "babel-polyfill": "6.23.0",
-	"babel-runtime": "6.23.0",
+    "babel-runtime": "6.23.0",
     "cheerio": "1.0.0-rc.2",
-    "request": "2.81.0"
+    "discord.js": "11.1.0",
+    "moment": "^2.18.1",
+    "request": "2.81.0",
+    "sqlite": "2.8.0"
   },
   "devDependencies": {},
   "repository": {
