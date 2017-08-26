@@ -14,6 +14,7 @@ exports.run = (client, message, args, Discord, sql) => {
 
   if(!user){return message.reply("Please mention a user.")}
   if(!time){return message.reply("Please specify a time.")}
+
   if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
   if (args.length >= 2){
   function addmute(){
@@ -24,7 +25,7 @@ exports.run = (client, message, args, Discord, sql) => {
   user.send(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\` for \`${ms(ms(time), {long: true})}.\` \nPlease read the rules and try not to break them again.`)
 
   //Notifies the moderator
-  message.channel.send(`Eos \`Success\` - User muted successfully for \`${ms(ms(time), {long: true})}.\`.`)
+  message.channel.send(`Eos \`Success\` - User muted for \`${ms(ms(time), {long: true})}.\`.`)
   .then(message=>message.react('✅'));
 
   setTimeout(function() {

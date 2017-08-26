@@ -14,7 +14,8 @@
     "babel-runtime": "6.23.0",
     "cheerio": "1.0.0-rc.2",
     "discord.js": "11.1.0",
-    "moment": "^2.18.1",
+    "ms": "^2.18.1",
+    "moment": "2.0.0",
     "request": "2.81.0",
     "sqlite": "2.8.0"
   },
