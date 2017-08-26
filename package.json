@@ -16,8 +16,7 @@
     "discord.js": "11.1.0",
     "moment": "^2.18.1",
     "request": "2.81.0",
-    "sqlite": "2.8.0",
-    "moment": "2.18.1"
+    "sqlite": "2.8.0"
   },
   "devDependencies": {},
   "repository": {
@@ -29,5 +28,5 @@
   "bugs": {
     "url": "https://github.com/VeraxonHD/eos-modbot/issues"
   },
-  "homepage": "https://github.com/VeraxonHD/eos-modbot#readme"
+  "homepage": "http://veraxonhd.me/"
 }
