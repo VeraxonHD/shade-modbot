@@ -66,7 +66,7 @@ client.on("messageDelete", message => {
     .setTimestamp(new Date());
 
     if(!message.content){
-  		embed.addField("Message Content", "None", false)
+  		return;
   	}else{
   		if(message.content.length >= 1023){
   			embed.addField("Message Content", "Too long to post", false)
@@ -166,18 +166,28 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
-  if (!message.content.startsWith(prefix)) return
-  if (message.content.includes(process.env.TOKEN)){return ("This command's response contained a sensitive token which has been omitted.")}
+
   let guild = message.guild
-  //new tgtchannel finder here
+    //client.user.lastMessage.delete(5000).catch(console.log)
+
+    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
+      if(!row){return message.channel.send("There is no channel set up for logging. Please complete the configuration and return.")}
+      if((client.user.id === message.author.id) && (message.channel.id != row.channelid)){
+        client.user.lastMessage.delete(5000).catch(console.log)
+      }
+    })
+
+  if (message.content.startsWith(prefix)) {
+    message.delete(5000).catch(console.log)
+  }
+
+  if (!message.content.startsWith(prefix)) return
+
 
   exports.noPermReact = () => {
     return message.channel.send(`Eos - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
-  exports.successReact = () => {
-
-  }
 
   let command = message.content.split(" ")[0];
   command = command.slice(prefix.length);
