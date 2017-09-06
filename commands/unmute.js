@@ -17,7 +17,7 @@ exports.run = (client, message, args, Discord, sql) => {
 
   //Notifies the user
   user.send(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
-    .then(message=>message.react('ℹ️'));
+    .then(message=>message.react('❕'));
 
   //Notifies the moderator
   message.channel.send("Eos \`Success`\ - User un-muted successfully.")
