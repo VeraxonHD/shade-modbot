@@ -1,6 +1,8 @@
 exports.run = (client, message, args, Discord, sql) => {
   var react = require("../eos.js")
   var guild = message.guild
+  var config = require("../config.json")
+
   //The ID for the muted role
   let mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
   //the user's mentionable
@@ -22,8 +24,12 @@ exports.run = (client, message, args, Discord, sql) => {
   }
   setTimeout(addmute, 500)
   //Notifies the user
-  user.send(`Eos \`Info\` \nDear user: You have been muted in \`${guild.name}\` by \`${moderator}\` for \`${ms(ms(time), {long: true})}.\` \nPlease read the rules and try not to break them again.`)
-
+  var muteMsg = require("../config.json")[guild.id].mute.message
+  if(!muteMsg){
+    user.send(`You were muted in ${guild.name} for ${time} by ${moderator}. Please do not break the rules again as further punishment may be dealt.`)
+  }else{
+    user.send(muteMsg)
+  }
   //Notifies the moderator
   message.channel.send(`Eos \`Success\` - User muted for \`${ms(ms(time), {long: true})}.\`.`)
   .then(message=>message.react('✅'));
@@ -39,14 +45,11 @@ exports.run = (client, message, args, Discord, sql) => {
     .setTimestamp(message.createdAt)
     .addField("Muted By: ", moderator, true)
     .addField("Reason: ", args.slice(2).join(" "), true)
+    .addField("Time: ", time, true)
     .setFooter("Automated Mod Logging");
 
-  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      var tgtchannel = message.guild.channels.get(row.channelid)
-      tgtchannel.send({embed})
-  }).catch(err => {
-    console.log(err)
-  })
+    const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+    logchannel.send({embed}).catch(console.log)
 
   }else{
     message.reply("Eos \`Error`\ - You must add a reason!")

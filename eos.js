@@ -3,16 +3,18 @@ const client = new Discord.Client();
 const fs = require("fs");
 const sql = require('sqlite');
 const prefix = (process.env.PREFIX)
+const config = require("./config.json")
 
 //logs in using token
 client.login(process.env.TOKEN);
+
 sql.open('eos-database.sqlite');
 //sends ready echo to console
 client.on('ready', () => {
-  console.log('Eos Booting. Started at ' + new Date());
   console.log("Prefix is: " + prefix)
-  console.log("Databases opened")
-  console.log("Eos is R E A D Y. Ended at " + new Date())
+  console.log("Eos is R E A D Y.")
+
+  //client.user.setGame("Undergoing maintenance. Possible downtime soon.").catch(console.log)
 });
 
 client.on("guildMemberRemove", member => {
@@ -99,12 +101,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
     .setThumbnail(newMessage.author.avatarURL)
     .setTimestamp(new Date())
 
-    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-        var tgtchannel = guild.channels.get(row.channelid)
-        tgtchannel.send({embed})
-    }).catch(err => {
-      console.log(err)
-    })
+
 })
 
 //Starboard message reaction
@@ -167,65 +164,46 @@ fs.readdir("./events/", (err, files) => {
 
 client.on("message", message => {
 
-  let guild = message.guild
-    //client.user.lastMessage.delete(5000).catch(console.log)
+  if(message.channel.type === "dm"){return;}
 
-    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      if(!row){return message.channel.send("There is no channel set up for logging. Please complete the configuration and return.")}
-      if((client.user.id === message.author.id) && (message.channel.id != row.channelid)){
-        client.user.lastMessage.delete(5000).catch(console.log)
-      }
-    })
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let guild = message.guild
+
+  const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+
+  if ((client.user.id === message.author.id) && (message.channel.id != logchannel) && (config[guild.id].autoCleanUpBlacklist.indexOf(command) != 0)){
+    message.delete(15000).catch(console.log)
+  }
 
   if (message.content.startsWith(prefix)) {
-    message.delete(5000).catch(console.log)
+    message.delete(15000).catch(console.log)
   }
 
   if (!message.content.startsWith(prefix)) return
-
 
   exports.noPermReact = () => {
     return message.channel.send(`Eos - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
 
-  let command = message.content.split(" ")[0];
-  command = command.slice(prefix.length);
-
   let args = message.content.split(" ").slice(1);
-  // The list of if/else is replaced with those simple 2 lines:
 
   try {
     let commandFile = require(`./commands/${command}.js`);
-
     var serverid = guild.id;
-    if(command == "logchannel"){return commandFile.run(client, message, args, Discord, sql, guild)
-      }else{
-        sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
-          if(!row){
-            message.channel.send("There is no log channel for this server. Please set one up and edit the channel topic.");
-          }else{
-            var logchannel = message.guild.channels.get(row.channelid);
-            var topicString = logchannel.topic;
 
-            if(!topicString){
-              message.channel.send("There is no config information to be displayed. Please set up config information in the topic of the log channel.");
-            }
-
-            let configuration = topicString.split(";");
-            if(configuration.includes(command)){
-              message.channel.send("This command has been disabled on this server by an administrator. DM them if you think this is an error.")
-              return;
-            }else{
-              commandFile.run(client, message, args, Discord, sql, guild);
-            }
-          }
-        })
-      }
+    if(config[guild.id].disabledCommands.indexOf(command) != 0){
+      commandFile.run(client, message, args, Discord, sql, guild)
+    }else{
+      return(message.channel.send("This command has been disabled by a server administrator."))
+    }
   } catch (err) {
     console.error(err);
   }
 });
+
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n", err);
 });

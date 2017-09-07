@@ -53,12 +53,9 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
   .addField("Reason: ", args.slice(1).join(" "), true)
   .setFooter("Automated Mod Logging");
 
-  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      var tgtchannel = message.guild.channels.get(row.channelid)
-      tgtchannel.send({embed})
-  }).catch(err => {
-    console.log(err)
-  })
+  const config = require ("../config.json")
+  const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+  logchannel.send({embed}).catch(console.log)
 
 }else{
   return message.reply("Eos \`Error`\ - You must add a reason!")
