@@ -1,0 +1,38 @@
+{
+  "292941255976026114" :  {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "292956168316256256",
+    "autoCleanUpBlacklist" : "google userinfo eval",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : ""
+    },
+    "selfRoles" : "Baiters Guardian"
+  },
+  "137719638556540929" : {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "299712887314972673",
+    "autoCleanUpBlacklist" : "",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : "You have disavowed The Division for breaking the rules of conduct and as such have been made Rogue."
+    },
+    "selfRoles" : "na eu xb1 ps4 pc uk aus hk"
+  },
+  "240801631875235840" : {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "298065510816546817",
+    "autoCleanUpBlacklist" : "google userinfo",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : ""
+    },
+    "selfRoles" : ""
+  }
+}
