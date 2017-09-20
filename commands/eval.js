@@ -1,6 +1,9 @@
-exports.run = (client, message, params) => {
+exports.run = (client, message, params, command) => {
 
-  if(message.author.id != "213040107278696450") return
+  const config = require("../config.json");
+  const guild = message.guild
+
+  if(message.author.id != config.general.ownerID) return
 
   function clean(text) {
     if (typeof(text) === "string")
@@ -15,9 +18,9 @@ exports.run = (client, message, params) => {
     if (typeof evaled !== "string")
       evaled = require("util").inspect(evaled);
 
-    message.channel.sendCode("xl", clean(evaled))
+    message.channel.send(clean(evaled))
     .then(message=>message.react('✅'));
   } catch (err) {
-    message.channel.sendMessage(`\`nope.exe\` \`\`\`xl\n${clean(err)}\n\`\`\``)
+    message.channel.send(`\`Code execution failed.\` \`\`\`xl\n${clean(err)}\n\`\`\``)
     .then(message=>message.react('❎'));
 }};

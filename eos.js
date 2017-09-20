@@ -28,12 +28,13 @@ client.on("guildMemberRemove", member => {
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
-  sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-      var tgtchannel = guild.channels.get(row.channelid)
-      tgtchannel.send({embed})
-  }).catch(err => {
-    console.log(err)
-  })
+    if(config[guild.id].disabledMisc.indexOf("memberLog") != 0){
+      const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
+      joinLogChannel.send(`${member.displayName} has left the server! Bye!`)
+    }
+
+    const logchannel = guild.channels.get(config[guild.id].logchannelID)
+    logchannel.send({embed})
 })
 
 client.on("guildMemberAdd", member => {
@@ -41,7 +42,6 @@ client.on("guildMemberAdd", member => {
   let guild = member.guild
   const ruleschannel = guild.channels.find("name", "server-rules")
 
-  //guild.defaultChannel.send(`Eos \`Info\` - User ${member.user.username} has joined ${member.guild.name}. Please read the ${ruleschannel}!`)
     embed.addField("User Joined", member.user.username, true)
     embed.addField("User Discriminator", member.user.discriminator, true)
     embed.addField("User ID", member.user.id)
@@ -50,12 +50,14 @@ client.on("guildMemberAdd", member => {
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
-    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-        var tgtchannel = guild.channels.get(row.channelid)
-        tgtchannel.send({embed})
-    }).catch(err => {
-      console.log(err)
-    })
+    const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
+    if(config[guild.id].disabledMisc.indexOf("memberLog") != 0){
+      joinLogChannel.send(`${member.displayName} has joined the server! Welcome!`)
+    }
+
+
+    const logchannel = guild.channels.get(config[guild.id].logchannelID)
+    logchannel.send({embed})
 })
 
 client.on("messageDelete", message => {
@@ -77,12 +79,8 @@ client.on("messageDelete", message => {
   		}
   	}
 
-    sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-        var tgtchannel = guild.channels.get(row.channelid)
-        tgtchannel.send({embed})
-    }).catch(err => {
-      console.log(err)
-    })
+    const logchannel = guild.channels.get(config[guild.id].logchannelID)
+    logchannel.send({embed})
 })
 
 client.on("messageUpdate", (oldMessage, newMessage) => {
@@ -101,6 +99,8 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
     .setThumbnail(newMessage.author.avatarURL)
     .setTimestamp(new Date())
 
+  const logchannel = guild.channels.get(config[guild.id].logchannelID)
+  logchannel.send({embed})
 
 })
 
@@ -177,7 +177,7 @@ client.on("message", message => {
     message.delete(15000).catch(console.log)
   }
 
-  if (message.content.startsWith(prefix)) {
+  if (message.content.startsWith(prefix) && (command != "prune")) {
     message.delete(15000).catch(console.log)
   }
 
@@ -195,7 +195,7 @@ client.on("message", message => {
     var serverid = guild.id;
 
     if(config[guild.id].disabledCommands.indexOf(command) != 0){
-      commandFile.run(client, message, args, Discord, sql, guild)
+      commandFile.run(client, message, args, Discord, sql, guild, command)
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
     }

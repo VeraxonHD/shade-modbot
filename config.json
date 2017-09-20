@@ -9,19 +9,21 @@
       "roleName" : "Muted",
       "message" : ""
     },
-    "selfRoles" : "Baiters Guardian"
+    "selfRoles" : "Baiters Guardian",
+    "joinLogChannel" : "292941255976026114"
   },
   "137719638556540929" : {
     "disabledCommands" : "riotcontrol riotrepeal",
     "disabledEvents" : "",
-    "disabledMisc" : "",
+    "disabledMisc" : "memberLog",
     "logchannelID" : "299712887314972673",
     "autoCleanUpBlacklist" : "",
     "mute" : {
       "roleName" : "Muted",
       "message" : "You have disavowed The Division for breaking the rules of conduct and as such have been made Rogue."
     },
-    "selfRoles" : "na eu xb1 ps4 pc uk aus hk"
+    "selfRoles" : "na eu xb1 ps4 pc uk aus hk",
+    "joinLogChannel" : "137719638556540929"
   },
   "240801631875235840" : {
     "disabledCommands" : "riotcontrol riotrepeal",
@@ -33,6 +35,10 @@
       "roleName" : "Muted",
       "message" : ""
     },
-    "selfRoles" : ""
+    "selfRoles" : "",
+    "joinLogChannel" : "240801631875235840"
+  },
+  "general" : {
+    "ownerID" : "213040107278696450"
   }
 }
