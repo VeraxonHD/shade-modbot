@@ -40,5 +40,21 @@
   },
   "general" : {
     "ownerID" : "213040107278696450"
+  },
+  "335884553296019457" : {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "335889591645241346",
+    "autoCleanUpBlacklist" : "google userinfo",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : ""
+    },
+    "selfRoles" : "",
+    "joinLogChannel" : "338441119836667904"
+  },
+  "general" : {
+    "ownerID" : "213040107278696450"
   }
 }
