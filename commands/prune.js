@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
 
   if(!args[0]){
     message.channel.send("Eos `Error` - Please define a number of channels to delete or a specific user's messages to delete.\n\`\`\`Usage: \n!prune <amount> or !prune <user> <amount> \`\`\`")
-  }else if(messagecount >= 100){return message.channel.send("Eos `Error` - You cannot delete more than 100 messages at once!")
+  }else if(messagecount >= 100){return message.channel.send("Eos `Error` - You cannot delete 100 or more messages at once!")
   }else if(args[1]){
     const target = message.mentions.users.first()
 
