@@ -5,7 +5,7 @@ exports.run = (client, message, args) => {
 
   if(config[guild.id].selfRoles === ""){return message.reply("There are no selfroles available. Please get the server owner to change the values.")}
   const user = message.author.id;
-  const role = guild.roles.find("name", args[0]/*.toLowerCase()*/);
+  const role = guild.roles.find("name", args[0]);
 
   if(!role){
     return message.reply("That role has not been created. Please contact a server administrator!")
