@@ -56,5 +56,18 @@
   },
   "general" : {
     "ownerID" : "213040107278696450"
+  },
+  "373828154135019530" : {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "373837595890679819",
+    "autoCleanUpBlacklist" : "google userinfo",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : ""
+    },
+    "selfRoles" : "|LFG|_PVP |LFG|_PVE",
+    "joinLogChannel" : "338441119836667904"
   }
 }
