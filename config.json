@@ -69,5 +69,18 @@
     },
     "selfRoles" : "Crucible PvE",
     "joinLogChannel" : "373828154135019532"
+  },
+  "383987122706579466" : {
+    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledEvents" : "",
+    "disabledMisc" : "",
+    "logchannelID" : "386243756619202580",
+    "autoCleanUpBlacklist" : "google serverinfo userinfo",
+    "mute" : {
+      "roleName" : "Muted",
+      "message" : ""
+    },
+    "selfRoles" : "",
+    "joinLogChannel" : "384274772001030165"
   }
 }

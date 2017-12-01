@@ -3,3 +3,4 @@ commands/disabled
 start.bat
 .env
 eos-database.sqlite
+commands/group.js
