@@ -13,7 +13,7 @@
     "joinLogChannel" : "292941255976026114"
   },
   "137719638556540929" : {
-    "disabledCommands" : "riotcontrol riotrepeal",
+    "disabledCommands" : "riotcontrol riotrepeal tag",
     "disabledEvents" : "",
     "disabledMisc" : "memberLog",
     "logchannelID" : "299712887314972673",

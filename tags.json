@@ -1,0 +1,14 @@
+{
+  "373828154135019530" : {
+      "underbelly-map" : "**Underbelly Map for The Leviathan Raid** - https://goo.gl/GnehUZ",
+      "pleasure-gardens-map" : "**Pleasure Gardens Map for The Leviathan Raid** - <https://i.imgur.com/oCEK6EK.png>"
+
+  },
+  "292941255976026114" : {
+      "test" : "test",
+      "test2" : "test2"
+  },
+  "global" : {
+    "example" : "Hello World! This is an example of a Global Tag using Eos!"
+  }
+}
