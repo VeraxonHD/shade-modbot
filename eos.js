@@ -120,14 +120,16 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
   }
 
   if(!oldMember.voiceChannel){
-    embed.addField("User joined a voice channel", `${user} joined ${newMember.voiceChannel.name}.`)
+    embed.addField("User joined a voice channel", `${user} joined ${newMember.voiceChannel.name}.`, true)
   }else if(!newMember.voiceChannel){
-    embed.addField("User disconnected from voice channels", `${user} left ${oldMember.voiceChannel.name}.`)
+    embed.addField("User disconnected from voice channels", `${user} left ${oldMember.voiceChannel.name}.`, true)
   }else{
     embed.setAuthor(`${user} changed voice channels.`)
-    embed.addField("Old channel", `${oldMember.voiceChannel.name}`)
-    embed.addField("New channel", `${newMember.voiceChannel.name}`)
+    embed.addField("Old channel", `${oldMember.voiceChannel.name}`, true)
+    embed.addField("New channel", `${newMember.voiceChannel.name}`, true)
   }
+
+  embed.addField("User ID", newMember.id)
   embed.setColor(newMember.guild.member(client.user).highestRole.color)
   embed.setTimestamp(newMember.createdAt)
   voicelogchannel.send({embed}).catch(console.log)
