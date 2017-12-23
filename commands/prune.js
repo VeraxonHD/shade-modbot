@@ -6,8 +6,8 @@ exports.run = (client, message, args) => {
   if (!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()}
 
   if(!args[0]){
-    message.channel.send("Eos `Error` - Please define a number of channels to delete or a specific user's messages to delete.\n\`\`\`Usage: \n!prune <amount> or !prune <user> <amount> \`\`\`")
-  }else if(messagecount >= 100){return message.channel.send("Eos `Error` - You cannot delete 100 or more messages at once!")
+    message.channel.send("Shade `Error` - Please define a number of channels to delete or a specific user's messages to delete.\n\`\`\`Usage: \n!prune <amount> or !prune <user> <amount> \`\`\`")
+  }else if(messagecount >= 100){return message.channel.send("Shade `Error` - You cannot delete 100 or more messages at once!")
   }else if(args[1]){
     const target = message.mentions.users.first()
 
@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
           msgArray = msgArray.filter(m => m.author.id === target.id)
           message.channel.bulkDelete(msgArray)
         })
-    message.channel.send(`Eos \`Success\` - **${messagecount}** messages from user **${target}** deleted successfuly!`)
+    message.channel.send(`Shade \`Success\` - **${messagecount}** messages from user **${target}** deleted successfuly!`)
       .then(message=>message.react('✅'))
 
     }else if(args[0]){
@@ -25,7 +25,7 @@ exports.run = (client, message, args) => {
         //then deletes them
             .then(messages => message.channel.bulkDelete(messages));
         //le confirmation message
-        message.channel.send(`Eos \`Success\` - **${messagecount}** messages deleted successfuly!`)
+        message.channel.send(`Shade \`Success\` - **${messagecount}** messages deleted successfuly!`)
           .then(message=>message.react('✅'));
  }
  }

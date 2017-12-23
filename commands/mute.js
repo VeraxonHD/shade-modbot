@@ -31,7 +31,7 @@ exports.run = (client, message, args, Discord, sql) => {
     user.send(muteMsg)
   }
   //Notifies the moderator
-  message.channel.send(`Eos \`Success\` - User muted for \`${ms(ms(time), {long: true})}.\`.`)
+  message.channel.send(`Shade \`Success\` - User muted for \`${ms(ms(time), {long: true})}.\`.`)
   .then(message=>message.react('✅'));
 
   setTimeout(function() {
@@ -52,7 +52,7 @@ exports.run = (client, message, args, Discord, sql) => {
     logchannel.send({embed}).catch(console.log)
 
   }else{
-    message.reply("Eos \`Error`\ - You must add a reason!")
+    message.reply("Shade \`Error`\ - You must add a reason!")
     .then(message=>message.react('❎'));
   }
 }

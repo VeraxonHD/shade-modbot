@@ -12,9 +12,11 @@ sql.open('eos-database.sqlite');
 //sends ready echo to console
 client.on('ready', () => {
   console.log("Prefix is: " + prefix)
-  console.log("Eos is R E A D Y.")
-
-  //client.user.setGame("Undergoing maintenance. Possible downtime soon.").catch(console.log)
+  console.log("Shade is R E A D Y.")
+  client.user.setUsername("Shade")
+  .then(user => console.log("My name has changed to Shade."))
+  .catch(console.error)
+  client.user.setGame("!!help").catch(console.log)
 });
 
 client.on("guildMemberRemove", member => {
@@ -181,11 +183,11 @@ client.on("message", message => {
     message.delete(15000).catch(console.log)
   }
   */
-  
+
   if (!message.content.startsWith(prefix)) return
 
   exports.noPermReact = () => {
-    return message.channel.send(`Eos - \`Error\` - You do not have permission to perform that command.`)
+    return message.channel.send(`Shade - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
 

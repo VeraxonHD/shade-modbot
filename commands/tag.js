@@ -1,6 +1,8 @@
 exports.run = (client, message, args, Discord) => {
   var guild = message.guild
   var taglist = require("../tags.json")
+  var fs = require("fs")
+  var jsonfile = require("jsonfile")
 
   if(args[0] == "create"){
     var tagname = args[1]
@@ -15,10 +17,16 @@ exports.run = (client, message, args, Discord) => {
     }else if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){
       message.channel.send("`User Permission Error` - You do not have access to the relevant permissions to use this command.")
     }else if(JSON.stringify(taglist[guild.id]).indexOf(tagname) != -1){
-      message.channel.send("`Eos Error` - This custom command already exists. Please choose a unique name or type `!!tag list`")
+      message.channel.send("`Shade Error` - This custom command already exists. Please choose a unique name or type `!!tag list`")
     }else{
+    /*  var output = {
+        [guild.id] : {
+          [tagname] : tagcontent
+        }
+      }
+    */
+      message.channel.send("`Shade Success` - Custom command created successfully!")
       taglist[guild.id][tagname] = tagcontent
-      message.channel.send("`Eos Success` - Custom command created successfully!")
     }
 
   }else if(args[0] == "delete"){
@@ -29,7 +37,7 @@ exports.run = (client, message, args, Discord) => {
     }else if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){
       message.channel.send("`User Permission Error` - You do not have access to the relevant permissions to use this command.")
     }else if(JSON.stringify(taglist[guild.id]).indexOf(tagname) == -1){
-      message.channel.send("`Eos Error` - This custom command does not exist. Please choose a valid tag to delete.")
+      message.channel.send("`Shade Error` - This custom command does not exist. Please choose a valid tag to delete.")
     }else{
       delete taglist[guild.id][tagname]
     }
@@ -45,7 +53,7 @@ exports.run = (client, message, args, Discord) => {
     }else if(JSON.stringify(taglist.global).indexOf(tagname) != -1){
       message.channel.send(`\`Tag Request\` - ${taglist.global[tagname]}`)
     }else{
-      message.channel.send("Eos `Error` - The tag you requested could not be found. Check `!!tag list`.")
+      message.channel.send("Shade `Error` - The tag you requested could not be found. Check `!!tag list`.")
     }
   }
 }

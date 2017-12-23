@@ -12,21 +12,21 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
      sql.run('INSERT INTO warn (target, warnings) VALUES (?, ?)', [target.id, 1])
      .catch(console.log())
 
-     message.channel.send(`Eos \`Success\` - User ${target.username}'s record created and warned.'!`)
+     message.channel.send(`Shade \`Success\` - User ${target.username}'s record created and warned.'!`)
          .then(message=>message.react('✅'))
    } else {
      sql.run(`UPDATE warn SET warnings ="${row.warnings + 1}" WHERE target ="${target.id}"`)
      .catch(console.log())
 
-     message.channel.send(`Eos \`Success\` - User ${target.username} warned!`)
+     message.channel.send(`Shade \`Success\` - User ${target.username} warned!`)
          .then(message=>message.react('✅'))
     if(row.warnings == 2){
       message.guild.member(target).kick()
-      message.channel.send(`Eos \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
+      message.channel.send(`Shade \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
         .then(message=>message.react('ℹ️'));
         sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
             var tgtchannel = message.guild.channels.get(row.channelid)
-            tgtchannel.send(`Eos \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
+            tgtchannel.send(`Shade \`Info\` - User ${target.username} was kicked for exceeding the Warn threshold`)
             .then(message=>message.react('ℹ️'));
         }).catch(err => {
           console.log(err)
@@ -40,7 +40,7 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
      sql.run('INSERT INTO warn (target, warnings) VALUES (?, ?)', [target.id, (row.warnings + 1)])
      .catch(console.log())
 
-     message.channel.send(`Eos \`Success\` - User ${target.username} warned!`)
+     message.channel.send(`Shade \`Success\` - User ${target.username} warned!`)
          .then(message=>message.react('✅'))
    })
  )});
@@ -58,6 +58,6 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
   logchannel.send({embed}).catch(console.log)
 
 }else{
-  return message.reply("Eos \`Error`\ - You must add a reason!")
+  return message.reply("Shade \`Error`\ - You must add a reason!")
         .then(message=>message.react('❎'));
 }}

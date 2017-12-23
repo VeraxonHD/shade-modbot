@@ -17,7 +17,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
         //send the confirmation message, add a react and kick the user
         if (args.length >= 2){
         message.guild.member(kickeduser).kick()
-        .then(message.channel.send("Eos \`Success`\ - User kicked successfully.")
+        .then(message.channel.send("Shade \`Success`\ - User kicked successfully.")
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
@@ -33,7 +33,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
           logchannel.send({embed}).catch(console.log)
 
         }else{
-          message.reply("Eos \`Error`\ - You must add a reason!")
+          message.reply("Shade \`Error`\ - You must add a reason!")
           .then(message=>message.react('❎'));
       }
     }

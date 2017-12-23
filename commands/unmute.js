@@ -16,11 +16,11 @@ exports.run = (client, message, args, Discord, sql) => {
   guild.member(user).removeRole(mutedRole)
 
   //Notifies the user
-  user.send(`Eos \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
+  user.send(`Shade \`Info\` \nDear user: You have been un-muted in \`${guild.name}\` by \`${moderator}\`. Welcome back.`)
     .then(message=>message.react('❕'));
 
   //Notifies the moderator
-  message.channel.send("Eos \`Success`\ - User un-muted successfully.")
+  message.channel.send("Shade \`Success`\ - User un-muted successfully.")
   .then(message=>message.react('✅'));
 
   //Sets up and sends the embed.

@@ -11,7 +11,7 @@ if(!managerrole){return message.channel.send("There is no Poll Manager Role. You
 if(!guild.members.get(message.author.id).roles.find("name", "Poll Manager")){return message.channel.send("You do not have permission to perform that command at this time.")}
 
 const pollTime = args[1] * 1000
-if(!pollTime){return message.channel.send(" Eos `Error` - You did not define a time. Please define a time **in seconds**.").then(m=>m.react("❎"))}
+if(!pollTime){return message.channel.send(" Shade `Error` - You did not define a time. Please define a time **in seconds**.").then(m=>m.react("❎"))}
 
 const pollThumb = args[2]
 
