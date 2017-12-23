@@ -17,6 +17,7 @@
     "disabledEvents" : "",
     "disabledMisc" : "memberLog",
     "logchannelID" : "299712887314972673",
+    "voicelogchannelid" : "353793934616559617",
     "autoCleanUpBlacklist" : "",
     "mute" : {
       "roleName" : "Muted",

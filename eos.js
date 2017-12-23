@@ -106,6 +106,32 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 
 })
 
+client.on("voiceStateUpdate", (oldMember, newMember) => {
+  var embed = new Discord.RichEmbed();
+  var guild = oldMember.guild
+  var user = newMember.nickname
+  var voicelogchannel = guild.channels.get(config[guild.id].voicelogchannelid)
+  if(!voicelogchannel){
+    voicelogchannel = guild.channels.get(config[guild.id].logchannelID)
+  }
+
+  if(!user){
+    user = newMember.user.username
+  }
+
+  if(!oldMember.voiceChannel){
+    embed.addField("User joined a voice channel", `${user} joined ${newMember.voiceChannel.name}.`)
+  }else if(!newMember.voiceChannel){
+    embed.addField("User disconnected from voice channels", `${user} left ${oldMember.voiceChannel.name}.`)
+  }else{
+    embed.setAuthor(`${user} changed voice channels.`)
+    embed.addField("Old channel", `${oldMember.voiceChannel.name}`)
+    embed.addField("New channel", `${newMember.voiceChannel.name}`)
+  }
+  embed.setColor(newMember.guild.member(client.user).highestRole.color)
+  embed.setTimestamp(newMember.createdAt)
+  voicelogchannel.send({embed}).catch(console.log)
+})
 //Starboard message reaction
 client.on("messageReactionAdd", (messageReaction, user) =>{
 
