@@ -10,10 +10,10 @@ exports.run = (client, message, args, Discord, sql) => {
   //Sends the confirmation message and slaps a react on that a$$
   let executor = message.author
   if(args.length < 1){
-    message.channel.send("Eos \`Error`\ - You must define a command to reload")
+    message.channel.send("Shade \`Error`\ - You must define a command to reload")
       .then(message=>message.react('❎'));
   }
-  message.channel.send(`Eos \`Success\` - The command **${args[0]}** has been reloaded!`).catch(console.log)
+  message.channel.send(`Shade \`Success\` - The command **${args[0]}** has been reloaded!`).catch(console.log)
   .then(message=>message.react('✅'));
 
   const embed = new Discord.RichEmbed()

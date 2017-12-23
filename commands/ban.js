@@ -17,7 +17,7 @@ exports.run = (client, message, args, Discord, sql) => {
         //send the confirmation message, add a react and ban the user
         if (args.length >= 2){
         message.guild.member(banneduser).ban()
-        .then(message.channel.send("Eos \`Success`\ - User banned successfully.")
+        .then(message.channel.send("Shade \`Success`\ - User banned successfully.")
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
@@ -34,7 +34,7 @@ exports.run = (client, message, args, Discord, sql) => {
           logchannel.send({embed}).catch(console.log)
 
         }else{
-          message.reply("Eos \`Error`\ - You must add a reason!")
+          message.reply("Shade \`Error`\ - You must add a reason!")
           .then(message=>message.react('❎'));
       }
     }

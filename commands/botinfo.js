@@ -1,7 +1,7 @@
 exports.run = (client, message, args, Discord) => {
 
   const embed = new Discord.RichEmbed()
-    .setAuthor("Information regarding Eos")
+    .setAuthor("Information regarding Shade")
     .addField("GitHub Link", "https://github.com/veraxonhd/eos-modbot/", true)
     .addField("Creator", "VeraxonHD (Vex#8289)", true)
     .addField("Website Link", "http://veraxonhd.me/", true)

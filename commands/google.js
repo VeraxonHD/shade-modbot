@@ -11,13 +11,13 @@ exports.run = (client, message, args, Discord) => {
       }).join('');
   }
 
-  if (args.length < 1){return message.channel.send("Eos `Error` - you must provide a search term.")}
+  if (args.length < 1){return message.channel.send("Shade `Error` - you must provide a search term.")}
 
-  message.channel.send("Eos `Info` - :arrows_counterclockwise: Searching for your query...")
+  message.channel.send("Shade `Info` - :arrows_counterclockwise: Searching for your query...")
   .then(
     request.get("https://google.com/search?client=chrime%rls=en&ie=UTF=9&oe=UTF-8&q=" + args.join("+"), (err, res, body) => {
     if (err || res.statusCode !== 200){
-      message.channel.send(`Eos \`Error\` - ${res.statusCode}: ${res.statusMessage}`)
+      message.channel.send(`Shade \`Error\` - ${res.statusCode}: ${res.statusMessage}`)
     }
     let $ = cheerio.load(body);
     var results = [];
@@ -46,7 +46,7 @@ exports.run = (client, message, args, Discord) => {
 
               message.channel.send({embed})
     }))
-    //.catch(message.channel.send("Eos `Error` - An error occured. Your search returned too many results or did not return any.!")
+    //.catch(message.channel.send("Shade `Error` - An error occured. Your search returned too many results or did not return any.!")
     .catch(console.log)
     //.then(m => m.react("❎"));
 }

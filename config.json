@@ -28,7 +28,7 @@
   "240801631875235840" : {
     "disabledCommands" : "riotcontrol riotrepeal",
     "disabledEvents" : "",
-    "disabledMisc" : "",
+    "disabledMisc" : "memberLog",
     "logchannelID" : "298065510816546817",
     "autoCleanUpBlacklist" : "google userinfo",
     "mute" : {
@@ -44,7 +44,7 @@
   "335884553296019457" : {
     "disabledCommands" : "riotcontrol riotrepeal",
     "disabledEvents" : "",
-    "disabledMisc" : "",
+    "disabledMisc" : "memberLog",
     "logchannelID" : "335889591645241346",
     "autoCleanUpBlacklist" : "google userinfo",
     "mute" : {

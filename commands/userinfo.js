@@ -22,7 +22,7 @@ function embedsend(){
     .setFooter(`Info on ${username} requested by ${message.author.username}`);
 
   if(args.length < 1){
-    message.reply("Eos \`Error`\ - You must identify a user to list.")
+    message.reply("Shade \`Error`\ - You must identify a user to list.")
     .then(message=>message.react('❎'));
   }else{
     let messageid = guild.members.get(userid).lastMessageID

@@ -12,9 +12,11 @@ sql.open('eos-database.sqlite');
 //sends ready echo to console
 client.on('ready', () => {
   console.log("Prefix is: " + prefix)
-  console.log("Eos is R E A D Y.")
-
-  //client.user.setGame("Undergoing maintenance. Possible downtime soon.").catch(console.log)
+  console.log("Shade is R E A D Y.")
+  client.user.setUsername("Shade")
+  .then(user => console.log("My name has changed to Shade."))
+  .catch(console.error)
+  client.user.setGame("!!help").catch(console.log)
 });
 
 client.on("guildMemberRemove", member => {
@@ -28,7 +30,7 @@ client.on("guildMemberRemove", member => {
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
-    if(config[guild.id].disabledMisc.indexOf("memberLog") != 0){
+    if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
       const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
       joinLogChannel.send(`${member.displayName} has left the server! Bye!`)
     }
@@ -51,7 +53,7 @@ client.on("guildMemberAdd", member => {
     embed.setThumbnail(member.user.avatarURL)
 
     const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
-    if(config[guild.id].disabledMisc.indexOf("memberLog") != 0){
+    if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
       joinLogChannel.send(`${member.displayName} has joined the server! Welcome!`)
     }
 
@@ -173,18 +175,19 @@ client.on("message", message => {
 
   const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
 
-  if ((client.user.id === message.author.id) && (message.channel.id != logchannel) && (config[guild.id].autoCleanUpBlacklist.indexOf(command) != 0)){
+  /*if ((client.user.id === message.author.id) && (message.channel.id != logchannel) && (config[guild.id].autoCleanUpBlacklist.indexOf(command) == -1) && message.content.indexOf("Tag Request") == -1){
     message.delete(15000).catch(console.log)
   }
 
-  if (message.content.startsWith(prefix) && (command != "prune")) {
+  if (message.content.startsWith(prefix) && (command != "prune") && (command != "tag")) {
     message.delete(15000).catch(console.log)
   }
+  */
 
   if (!message.content.startsWith(prefix)) return
 
   exports.noPermReact = () => {
-    return message.channel.send(`Eos - \`Error\` - You do not have permission to perform that command.`)
+    return message.channel.send(`Shade - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
 
@@ -194,7 +197,7 @@ client.on("message", message => {
     let commandFile = require(`./commands/${command}.js`);
     var serverid = guild.id;
 
-    if(config[guild.id].disabledCommands.indexOf(command) != 0){
+    if(config[guild.id].disabledCommands.indexOf(command) == -1){
       commandFile.run(client, message, args, Discord, sql, guild, command)
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
