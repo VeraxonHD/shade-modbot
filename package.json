@@ -18,7 +18,8 @@
     "moment": "^2.18.1",
     "ms": "2.0.0",
     "request": "2.81.0",
-    "sqlite": "2.8.0"
+    "sqlite": "2.8.0",
+    "dateformat" : "3.0.2"
   },
   "devDependencies": {},
   "repository": {
