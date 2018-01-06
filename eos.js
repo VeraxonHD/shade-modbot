@@ -229,15 +229,25 @@ client.on("message", message => {
 
   try {
     let commandFile = require(`./commands/${command}.js`);
+
     var serverid = guild.id;
 
-    if(config[guild.id].disabledCommands.indexOf(command) == -1){
+    if(config[guild.id].disabledCommands.indexOf(command) == -1 || commandFile.alias.indexOf(command) != -1){
       commandFile.run(client, message, args, Discord, sql, guild, command)
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
     }
   } catch (err) {
-    console.error(err);
+    console.log("\nA user tried to initiate a command that does not exist.")
+    console.log(`Attempted command: ${command}`)
+    console.log(`Username: ${message.author.tag}\n`)
+
+    var embed = new Discord.RichEmbed()
+      .addField("Error!", "Oops! An error has occured. Give me a second to look it over.")
+      .addField("Error Details", `You tried to use command !!${command}, which does not exist. You doughnut!`)
+      .setTimestamp(new Date())
+      .setColor("#ff0000")
+    message.reply({embed})
   }
 });
 
