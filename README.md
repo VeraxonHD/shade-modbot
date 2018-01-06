@@ -1,5 +1,5 @@
-# eos-modbot
-![alt-text](https://goo.gl/qKTLk9 "Shade Modbot")
+# Shade-Modbot
+![alt-text](https://i.imgur.com/fgk2yZQ.png "Shade Modbot")
 
 The Shade Moderation Bot by Vex
 ***
