@@ -19,14 +19,26 @@ exports.run = (client, message, args, Discord) => {
     }else if(JSON.stringify(taglist[guild.id]).indexOf(tagname) != -1){
       message.channel.send("`Shade Error` - This custom command already exists. Please choose a unique name or type `!!tag list`")
     }else{
-    /*  var output = {
+      /*var output = {
         [guild.id] : {
           [tagname] : tagcontent
-        }
+        },
+        taglist
       }
-    */
-      message.channel.send("`Shade Success` - Custom command created successfully!")
+      */
+
       taglist[guild.id][tagname] = tagcontent
+      jsonfile.writeFile("./tags.json", taglist, {spaces: 4}, function(error){
+        if(!error){
+          message.channel.send("`Shade Success` - Custom command was created successfully!")
+        }else{
+          message.channel.send("`Shade Error` - The command did not get created.")
+        }
+      })
+      /*jsonfile.writeFile("./tags.json", output, {spaces: 2}, function(err){
+        console.log(err);
+      })
+      */
     }
 
   }else if(args[0] == "delete"){
@@ -40,8 +52,14 @@ exports.run = (client, message, args, Discord) => {
       message.channel.send("`Shade Error` - This custom command does not exist. Please choose a valid tag to delete.")
     }else{
       delete taglist[guild.id][tagname]
+      jsonfile.writeFile("./tags.json", taglist, {spaces: 4}, function(error){
+        if(!error){
+          message.channel.send("`Shade Success` - Custom command was deleted successfully!")
+        }else{
+          message.channel.send("`Shade Error` - The command did not get deleted.")
+        }
+      })
     }
-
   }else if(args[0] == "list"){ //List all Tags
     message.channel.send(`**This Server's Custom Tags:** \n ${JSON.stringify(taglist[guild.id], null, "\t")}`)
     message.channel.send(`**Global Tags:** \n ${JSON.stringify(taglist.global, null, "\t")}`)
