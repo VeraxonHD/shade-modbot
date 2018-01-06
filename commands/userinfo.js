@@ -1,15 +1,16 @@
 exports.run = (client, message, args, Discord) => {
 
-function embedsend(){
-  message.channel.send({embed})
-}
-
   var dateformat = require("dateformat")
   var username = message.mentions.users.first()
   var userid = username.id
   var guild = message.guild
   var nickname = guild.members.get(userid).displayName
   var joined = guild.members.get(userid).joinedAt
+  var lastmessage = guild.members.get(userid).lastMessage
+
+  if(args.length < 1){
+    return message.channel.send("`User Error` - You must mention a user.")
+  }
 
   var embed = new Discord.RichEmbed()
     .setColor(message.guild.member(client.user).highestRole.color)
@@ -20,21 +21,11 @@ function embedsend(){
     .setFooter(`Requested by ${message.author.username}`)
     .setThumbnail(username.avatarURL)
 
-  if(args.length < 1){
-    message.reply("Shade \`Error`\ - You must identify a user to list.")
-    .then(message=>message.react('❎'));
+  if(!lastmessage){
+    embed.addField("Last Seen: ", "This user has either never sent a message, or the last message was sent before " + dateformat(client.readyAt, "dd/mm/yyyy, hh:MM:ss"), true)
   }else{
-    let messageid = guild.members.get(userid).lastMessageID
-    if(!messageid){
-      let lastseen = "N/A"
-      embed.addField("Last Seen", lastseen, true)
-      embedsend()
-    }else{
-      message.channel.fetchMessage(messageid)
-      .then((lastseen) => {
-        embed.addField("Last Seen", "At: " + dateformat(lastseen.createdAt, "dd/mm/yyyy, hh:MM:ss") + " GMT\n" + `In: #${lastseen.channel.name}`, true)
-        embedsend()
-      }).catch(console.log)
-    }
+    embed.addField("Last Seen", "At: " + dateformat(lastmessage.createdAt, "dd/mm/yyyy, hh:MM:ss") + " GMT\n" + `In: #${lastmessage.channel.name}`, true)
+  }
 
-}}
+  message.channel.send({embed})
+}
