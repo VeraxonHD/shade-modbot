@@ -57,7 +57,8 @@ sql.get(`SELECT * FROM warn WHERE target ='${target.id}'`).then(row => {
   const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
   logchannel.send({embed}).catch(console.log)
 
-}else{
-  return message.reply("Shade \`Error`\ - You must add a reason!")
-        .then(message=>message.react('❎'));
-}}
+  }else{
+    return message.reply("Shade \`Error`\ - You must add a reason!")
+          .then(message=>message.react('❎'));
+  }
+}
