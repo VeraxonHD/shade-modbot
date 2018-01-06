@@ -238,7 +238,7 @@ client.on("message", message => {
       return(message.channel.send("This command has been disabled by a server administrator."))
     }
   } catch (err) {
-    console.log("\nA user tried to initiate a command that does not exist.")
+    /*console.log("\nA user tried to initiate a command that does not exist.")
     console.log(`Attempted command: ${command}`)
     console.log(`Username: ${message.author.tag}\n`)
 
@@ -247,7 +247,9 @@ client.on("message", message => {
       .addField("Error Details", `You tried to use command !!${command}, which does not exist. You doughnut!`)
       .setTimestamp(new Date())
       .setColor("#ff0000")
-    message.reply({embed})
+    message.reply({embed}*/
+
+    console.log(err)
   }
 });
 
