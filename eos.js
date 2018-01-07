@@ -237,11 +237,12 @@ client.on("message", message => {
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
     }
-  } catch (err) {
+  } catch (err) {/*
     console.log("\nAn error occured.")
     console.log(`Attempted command: ${command}`)
     console.log(`Username: ${message.author.tag}`)
-    console.log("Error Code(?) " + err.code + "\n")
+    console.log("Error Code: " + err.code + "\n")
+    //console.log(`Client Error Code: ${client.error.code}`)
 
     var embed = new Discord.RichEmbed()
       .addField("Error!", "Oops! An error has occured. Give me a second to look it over.")
@@ -249,8 +250,9 @@ client.on("message", message => {
       .setTimestamp(new Date())
       .setColor("#ff0000")
     message.reply({embed})
-
+*/
     console.log(err)
+
   }
 });
 
