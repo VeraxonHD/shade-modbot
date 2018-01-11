@@ -32,7 +32,10 @@ exports.run = (client, message, args, Discord, sql) => {
     .setFooter("Automated Mod Logging");
 
     const config = require ("../config.json")
-    const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+    const logchannel = message.guild.channels.get(config[guild.id].modlogchannelID)
+    if(!logchannel){
+      logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+    }
     logchannel.send({embed}).catch(console.log)
 
   }
