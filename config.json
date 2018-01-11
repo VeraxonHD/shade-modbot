@@ -4,6 +4,7 @@
     "disabledEvents" : "",
     "disabledMisc" : "",
     "logchannelID" : "292956168316256256",
+    "modlogchannelID" : "401118153398026245",
     "autoCleanUpBlacklist" : "google userinfo eval",
     "mute" : {
       "roleName" : "Muted",
@@ -17,6 +18,7 @@
     "disabledEvents" : "",
     "disabledMisc" : "memberLog",
     "logchannelID" : "299712887314972673",
+    "modlogchannelID" : "150138495774621697",
     "voicelogchannelid" : "353793934616559617",
     "autoCleanUpBlacklist" : "",
     "mute" : {
@@ -63,6 +65,7 @@
     "disabledEvents" : "",
     "disabledMisc" : "",
     "logchannelID" : "373837595890679819",
+    "modlogchannelID" : "",
     "autoCleanUpBlacklist" : "google userinfo",
     "mute" : {
       "roleName" : "Muted",
@@ -76,6 +79,7 @@
     "disabledEvents" : "",
     "disabledMisc" : "",
     "logchannelID" : "386243756619202580",
+    "modlogchannelID" : "",
     "autoCleanUpBlacklist" : "google serverinfo userinfo",
     "mute" : {
       "roleName" : "Muted",

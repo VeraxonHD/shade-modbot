@@ -3,6 +3,11 @@ exports.run = (client, message, args, Discord, sql) => {
   var guild = message.guild
   var config = require("../config.json")
 
+  const logchannel = message.guild.channels.get(config[guild.id].modlogchannelID)
+  if(!logchannel){
+    logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+  }
+
   //The ID for the muted role
   let mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
   //the user's mentionable
@@ -36,6 +41,12 @@ exports.run = (client, message, args, Discord, sql) => {
 
   setTimeout(function() {
     guild.member(user).removeRole(mutedRole)
+    const unmuteEmbed = new Discord.RichEmbed()
+      .addField(`${user.tag} was unmuted automatically.`, `They were muted for ${time}`)
+      .setTimestamp(message.createdAt)
+      .setColor(message.guild.member(client.user).highestRole.color)
+      .setFooter("Automated Mod Logging");
+    logchannel.send({embed: unmuteEmbed});
   }, ms(time));
 
   //Sets up and sends the embed.
@@ -48,7 +59,6 @@ exports.run = (client, message, args, Discord, sql) => {
     .addField("Time: ", time, true)
     .setFooter("Automated Mod Logging");
 
-    const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
     logchannel.send({embed}).catch(console.log)
 
   }else{
