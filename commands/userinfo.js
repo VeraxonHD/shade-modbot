@@ -1,15 +1,22 @@
 exports.run = (client, message, args, Discord) => {
 
-  var dateformat = require("dateformat")
-  var username = message.mentions.users.first()
-  var userid = username.id
-  var guild = message.guild
-  var nickname = guild.members.get(userid).displayName
-  var joined = guild.members.get(userid).joinedAt
-  var lastmessage = guild.members.get(userid).lastMessage
+  var dateformat = require("dateformat");
+  var username = message.mentions.users.first();
+  var userid = username.id;
+  var guild = message.guild;
+  var nickname = guild.members.get(userid).displayName;
+  var joined = guild.members.get(userid).joinedAt;
+  var lastmessage = guild.members.get(userid).lastMessage;
+  var warnings = require("../warnings.json")
+
+  if(!warnings[userid]){
+    var warningCount = 0
+  }else{
+    var warningCount = warnings[userid]
+  }
 
   if(args.length < 1){
-    return message.channel.send("`User Error` - You must mention a user.")
+    return message.channel.send("`User Error` - You must mention a user.");
   }
 
   var embed = new Discord.RichEmbed()
@@ -19,13 +26,14 @@ exports.run = (client, message, args, Discord) => {
     .addField("User ID", userid, true)
     .addField("Joined", dateformat(joined, "dd/mm/yyyy \nhh:MM:ss") + " GMT", true)
     .setFooter(`Requested by ${message.author.username}`)
-    .setThumbnail(username.avatarURL)
+    .addField("Warnings", warningCount, true)
+    .setThumbnail(username.avatarURL);
 
   if(!lastmessage){
-    embed.addField("Last Seen: ", "This user has either never sent a message, or the last message was sent before " + dateformat(client.readyAt, "dd/mm/yyyy, hh:MM:ss"), true)
+    embed.addField("Last Seen: ", "This user has either never sent a message, or the last message was sent before " + dateformat(client.readyAt, "dd/mm/yyyy, hh:MM:ss"), true);
   }else{
-    embed.addField("Last Seen", "At: " + dateformat(lastmessage.createdAt, "dd/mm/yyyy, hh:MM:ss") + " GMT\n" + `In: #${lastmessage.channel.name}`, true)
+    embed.addField("Last Seen", "At: " + dateformat(lastmessage.createdAt, "dd/mm/yyyy, hh:MM:ss") + " GMT\n" + `In: #${lastmessage.channel.name}`, true);
   }
 
-  message.channel.send({embed})
+  message.channel.send({embed});
 }
