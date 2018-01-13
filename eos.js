@@ -8,7 +8,6 @@ const config = require("./config.json")
 //logs in using token
 client.login(process.env.TOKEN);
 
-sql.open('eos-database.sqlite');
 //sends ready echo to console
 client.on('ready', () => {
   console.log("Prefix is: " + prefix)
@@ -233,7 +232,7 @@ client.on("message", message => {
     var serverid = guild.id;
 
     if(config[guild.id].disabledCommands.indexOf(command) == -1 || commandFile.alias.indexOf(command) != -1){
-      commandFile.run(client, message, args, Discord, sql, guild, command)
+      commandFile.run(client, message, args, Discord, guild, command)
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
     }
