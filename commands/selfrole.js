@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
   const config = require("../config.json")
   const guild = message.guild;
 
-  if(config[guild.id].selfRoles === ""){return message.reply("There are no selfroles available. Please get the server owner to change the values.")}
+  if(!config[guild.id].selfRoles || config[guild.id].selfRoles === "null"){return message.reply("There are no selfroles available. Please get the server owner to change the values.")}
   const user = message.author.id;
   const role = guild.roles.find("name", args[0]);
 
