@@ -1,27 +1,27 @@
 {
     "292941255976026114": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
-        "disabledMisc": "",
+        "disabledEvents": "null",
+        "disabledMisc": "null",
         "logchannelID": "292956168316256256",
         "modlogchannelID": "401118153398026245",
-        "voicelogchannelid": "",
+        "voicelogchannelID": "402065349014454274",
         "autoCleanUpBlacklist": "google userinfo eval",
         "mute": {
             "roleName": "Muted",
-            "message": ""
+            "message": "null"
         },
         "selfRoles": "Baiters Guardian",
         "joinLogChannel": "292941255976026114"
     },
     "137719638556540929": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
+        "disabledEvents": "null",
         "disabledMisc": "memberLog",
         "logchannelID": "299712887314972673",
         "modlogchannelID": "150138495774621697",
-        "voicelogchannelid": "353793934616559617",
-        "autoCleanUpBlacklist": "",
+        "voicelogchannelID": "353793934616559617",
+        "autoCleanUpBlacklist": "null",
         "mute": {
             "roleName": "Muted",
             "message": "You have disavowed The Division for breaking the rules of conduct and as such have been made Rogue."
@@ -31,17 +31,17 @@
     },
     "240801631875235840": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
+        "disabledEvents": "null",
         "disabledMisc": "memberLog",
         "logchannelID": "298065510816546817",
-        "modlogchannelID": "",
-        "voicelogchannelid": "",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
         "mute": {
             "roleName": "Muted",
-            "message": ""
+            "message": "null"
         },
-        "selfRoles": "",
+        "selfRoles": "null",
         "joinLogChannel": "240801631875235840"
     },
     "general": {
@@ -49,47 +49,47 @@
     },
     "335884553296019457": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
+        "disabledEvents": "null",
         "disabledMisc": "memberLog",
         "logchannelID": "335889591645241346",
-        "modlogchannelID": "",
-        "voicelogchannelid": "",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
         "mute": {
             "roleName": "Muted",
-            "message": ""
+            "message": "null"
         },
-        "selfRoles": "",
+        "selfRoles": "null",
         "joinLogChannel": "338441119836667904"
     },
     "373828154135019530": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
-        "disabledMisc": "",
+        "disabledEvents": "null",
+        "disabledMisc": "null",
         "logchannelID": "373837595890679819",
-        "modlogchannelID": "",
-        "voicelogchannelid": "",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
         "mute": {
             "roleName": "Muted",
-            "message": ""
+            "message": "null"
         },
         "selfRoles": "Crucible PvE",
         "joinLogChannel": "373828154135019532"
     },
     "383987122706579466": {
         "disabledCommands": "riotcontrol riotrepeal",
-        "disabledEvents": "",
-        "disabledMisc": "",
+        "disabledEvents": "null",
+        "disabledMisc": "null",
         "logchannelID": "386243756619202580",
-        "modlogchannelID": "",
-        "voicelogchannelid": "",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google serverinfo userinfo",
         "mute": {
             "roleName": "Muted",
-            "message": ""
+            "message": "null"
         },
-        "selfRoles": "",
+        "selfRoles": "null",
         "joinLogChannel": "384274772001030165"
     }
 }

@@ -30,7 +30,7 @@ exports.run = (client, message, args, Discord, sql) => {
   setTimeout(addmute, 500)
   //Notifies the user
   var muteMsg = require("../config.json")[guild.id].mute.message
-  if(!muteMsg){
+  if(!muteMsg || muteMsg === "null"){
     user.send(`You were muted in ${guild.name} for ${time} by ${moderator}. Please do not break the rules again as further punishment may be dealt.`)
   }else{
     user.send(muteMsg)
