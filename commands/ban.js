@@ -31,7 +31,7 @@ exports.run = (client, message, args, Discord, sql) => {
 
           const config = require ("../config.json")
           const logchannel = message.guild.channels.get(config[guild.id].modlogchannelID)
-          if(!logchannel){
+          if(!logchannel || logchannel === "null"){
             logchannel = message.guild.channels.get(config[guild.id].logchannelID)
           }
           logchannel.send({embed}).catch(console.log)

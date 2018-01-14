@@ -112,7 +112,7 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
 
 
     var voicelogchannel = guild.channels.get(config[guild.id].voicelogchannelID)
-    if(!voicelogchannel){
+    if(!voicelogchannel || voicelogchannel === "null"){
       voicelogchannel = guild.channels.get(config[guild.id].logchannelID)
     }
 

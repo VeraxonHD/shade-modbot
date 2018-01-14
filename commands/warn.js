@@ -6,7 +6,7 @@ exports.run = (client, message, args, Discord) => {
   var guild = message.guild;
   var logchannel = message.guild.channels.get(config[guild.id].modlogchannelID);
 
-  if(!logchannel){
+  if(!logchannel || logchannel === "null"){
     logchannel = message.guild.channels.get(config[guild.id].logchannelID);
   }
 
