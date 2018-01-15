@@ -32,7 +32,7 @@ exports.run = (client, message, args, Discord) => {
         .addField("Reason: ", args.slice(1).join(" "), true)
         .addField("Current total warnings: ", warnings[user.id], true)
         .setFooter("Automated Mod Logging");
-      logchannel.send({embed});
+      logchannel.send(`**Infraction for:** ${user}`, {embed});
 
     }
   }

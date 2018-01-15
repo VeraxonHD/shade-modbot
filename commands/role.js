@@ -30,5 +30,5 @@ const role = guild.roles.find(role => role.name.toLowerCase() === args[1].toLowe
 
   const config = require ("../config.json")
   const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
-  logchannel.send({embed}).catch(console.log)
+  logchannel.send(`**Role updated for: **${user}`).catch(console.log)
 }
