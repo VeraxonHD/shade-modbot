@@ -46,7 +46,7 @@ exports.run = (client, message, args, Discord, sql) => {
       .setTimestamp(message.createdAt)
       .setColor(message.guild.member(client.user).highestRole.color)
       .setFooter("Automated Mod Logging");
-    logchannel.send({embed: unmuteEmbed});
+    message.guilds.channels.get(config[guild.id].logchannelID)(`**Infraction for: **${user}`);
   }, ms(time));
 
   //Sets up and sends the embed.
@@ -59,7 +59,7 @@ exports.run = (client, message, args, Discord, sql) => {
     .addField("Time: ", time, true)
     .setFooter("Automated Mod Logging");
 
-    logchannel.send({embed}).catch(console.log)
+    logchannel.send(`**Infraction for: **${user}`).catch(console.log)
 
   }else{
     message.reply("Shade \`Error`\ - You must add a reason!")
