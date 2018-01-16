@@ -34,7 +34,7 @@ exports.run = (client, message, args, Discord, sql) => {
           if(!logchannel || logchannel === "null"){
             logchannel = message.guild.channels.get(config[guild.id].logchannelID)
           }
-          logchannel.send(`**Infraction for: **${message.mentions.users.first()}`).catch(console.log)
+          logchannel.send(`**Infraction for: **${message.mentions.users.first()}`, {embed}).catch(console.log)
 
         }else{
           message.reply("Shade \`Error`\ - You must add a reason!")
