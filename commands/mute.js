@@ -46,7 +46,7 @@ exports.run = (client, message, args, Discord, sql) => {
       .setTimestamp(message.createdAt)
       .setColor(message.guild.member(client.user).highestRole.color)
       .setFooter("Automated Mod Logging");
-    message.guild.channels.get(config[guild.id].logchannelID).send(`**Infraction for: **${user}`);
+    message.guild.channels.get(config[guild.id].logchannelID).send(`**Infraction for: **${user}`, {embed});
   }, ms(time));
 
   //Sets up and sends the embed.
