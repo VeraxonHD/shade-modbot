@@ -46,7 +46,7 @@ exports.run = (client, message, args, Discord, sql) => {
       .setTimestamp(message.createdAt)
       .setColor(message.guild.member(client.user).highestRole.color)
       .setFooter("Automated Mod Logging");
-    message.guild.channels.get(config[guild.id].logchannelID)(`**Infraction for: **${user}`, {embed: unmuteEmbed});
+    message.guild.channels.get(config[guild.id].logchannelID).send(`**Infraction for: **${user}`, {embed: unmuteEmbed});
   }, ms(time));
   var reason = args.slice(2).join(" ")
   if(!reason){
