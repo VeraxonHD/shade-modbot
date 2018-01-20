@@ -33,7 +33,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
           if(!logchannel || logchannel === "null"){
             logchannel = message.guild.channels.get(config[guild.id].logchannelID)
           }
-          logchannel.send(`**Infraction for: **${kickeduser}`).catch(console.log)
+          logchannel.send(`**Infraction for: **${kickeduser}`, {embed}).catch(console.log)
 
         }else{
           message.reply("Shade \`Error`\ - You must add a reason!")

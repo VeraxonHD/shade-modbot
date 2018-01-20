@@ -4,3 +4,5 @@ start.bat
 .env
 eos-database.sqlite
 commands/group.js
+warnings.json
+config.json

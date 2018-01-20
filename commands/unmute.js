@@ -36,6 +36,6 @@ exports.run = (client, message, args, Discord, sql) => {
     if(!logchannel || logchannel === "null"){
       logchannel = message.guild.channels.get(config[guild.id].logchannelID)
     }
-    logchannel.send(`**Infraction for: **${user}`).catch(console.log)
+    logchannel.send(`**Infraction for: **${user}`, {embed}).catch(console.log)
 
   }
