@@ -46,8 +46,12 @@ exports.run = (client, message, args, Discord, sql) => {
       .setTimestamp(message.createdAt)
       .setColor(message.guild.member(client.user).highestRole.color)
       .setFooter("Automated Mod Logging");
-    message.guild.channels.get(config[guild.id].logchannelID).send(`**Infraction for: **${user}`, {embed});
+    message.guild.channels.get(config[guild.id].logchannelID)(`**Infraction for: **${user}`, {embed: unmuteEmbed});
   }, ms(time));
+  var reason = args.slice(2).join(" ")
+  if(!reason){
+    reason = "No Reason"
+  }
 
   //Sets up and sends the embed.
   const embed = new Discord.RichEmbed()
@@ -55,7 +59,7 @@ exports.run = (client, message, args, Discord, sql) => {
     .setColor(message.guild.member(client.user).highestRole.color)
     .setTimestamp(message.createdAt)
     .addField("Muted By: ", moderator, true)
-    .addField("Reason: ", args.slice(2).join(" "), true)
+    .addField("Reason: ", reason, true)
     .addField("Time: ", time, true)
     .setFooter("Automated Mod Logging");
 
