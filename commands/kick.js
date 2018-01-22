@@ -5,8 +5,15 @@ exports.run = (client, message, args, Discord, sql) => {
   //const tgtchannel = message.guild.channels.find('name', 'log-channel')
   //the user to be kicked
   var kickeduser = message.mentions.users.first()
+  if(kickeduser.id == client.user.id){
+    return message.channel.send("Why you gotta be so rude? Don't you know I'm Human too?")
+  }
   //saves the kick perms in a compact variable
   let kickPerms = message.channel.guild.member(client.user.id).hasPermission("KICK_MEMBERS")
+  var reason = args.slice(1).join(" ");
+  if(!reason){
+    reason = "No Reason";
+  }
 
 if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return react.noPermReact()}
   //if the bot doesn't have the permissions
@@ -25,7 +32,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
           .setTimestamp(message.createdAt)
           .addField("User Kicked: ", kickeduser, true)
           .addField("Kicked By: ", message.author.username, true)
-          .addField("Reason: ", args.slice(1).join(" "), true)
+          .addField("Reason: ", reason, true)
           .setFooter("Automated Mod Logging");
           //sends the embed
           const config = require ("../config.json")

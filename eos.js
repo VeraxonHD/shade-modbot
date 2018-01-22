@@ -1,12 +1,24 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
-const fs = require("fs");
-const sql = require('sqlite');
-const prefix = (process.env.PREFIX)
-const config = require("./config.json")
+var Discord = require("discord.js");
+var client = new Discord.Client();
+var fs = require("fs");
+var sql = require('sqlite');
+var prefix = (process.env.PREFIX)
+var config = require("./config.json")
 
 //logs in using token
 client.login(process.env.TOKEN);
+
+var answers = [
+  "If I had a pound for every time someone tagged me, I'd be very poor. feelsbadman.",
+  "What do you want?",
+  "What am I, Google Assistant?",
+  "<https://www.youtube.com/watch?v=VeSyyu5JrLY>",
+  "If you want my opinion, Pineapple should go on pizza. It's a free world.",
+  "Hurin > Oscar.",
+  "Here's a snippet from my sourcecode:\n\`\`\`var answers = ['Here's a snippet from my sourcecode: ']\`\`\` \nPlease pay to view more.",
+  "Lootboxes aren't bad. They allow the developer to make more revenue to make the game better! \n*This message was sponsored by Electronic Arts*.",
+  "Hello, I am Lt. Kamada. I am in posession of USD$1,000,000,000 in untraceable bullion and I must get it out of this country, my country, liberia. \nWill you the help me?"
+]
 
 //sends ready echo to console
 client.on('ready', () => {
@@ -19,7 +31,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberRemove", member => {
-  const embed = new Discord.RichEmbed()
+  var embed = new Discord.RichEmbed()
   let guild = member.guild
 
     embed.addField("User Left", member.user.username)
@@ -30,18 +42,21 @@ client.on("guildMemberRemove", member => {
     embed.setThumbnail(member.user.avatarURL)
 
     if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
-      const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
+      var joinLogChannel = guild.channels.get(config[guild.id].joinlogchannelID)
       joinLogChannel.send(`${member.displayName} has left the server! Bye!`)
     }
 
-    const logchannel = guild.channels.get(config[guild.id].logchannelID)
+    var logchannel = guild.channels.get(config[guild.id].joinlogchannelID)
+    if(!logchannel){
+      logchannel = guild.channels.get(config[guild.id].logchannelID)
+    }
     logchannel.send({embed})
 })
 
 client.on("guildMemberAdd", member => {
-  const embed = new Discord.RichEmbed()
+  var embed = new Discord.RichEmbed()
   let guild = member.guild
-  const ruleschannel = guild.channels.find("name", "server-rules")
+  var ruleschannel = guild.channels.find("name", "server-rules")
 
     embed.addField("User Joined", member.user.username, true)
     embed.addField("User Discriminator", member.user.discriminator, true)
@@ -51,19 +66,25 @@ client.on("guildMemberAdd", member => {
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
-    const joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
+    var joinLogChannel = guild.channels.get(config[guild.id].joinlogchannelID)
     if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
       joinLogChannel.send(`${member.displayName} has joined the server! Welcome!`)
     }
 
 
-    const logchannel = guild.channels.get(config[guild.id].logchannelID)
+    var logchannel = guild.channels.get(config[guild.id].joinlogchannelID)
+    if(!logchannel){
+      logchannel = guild.channels.get(config[guild.id].logchannelID)
+    }
     logchannel.send({embed})
 })
 
 client.on("messageDelete", message => {
-  const guild = message.guild
-  const embed = new Discord.RichEmbed()
+  if(message.author.id === client.user.id){
+    return;
+  }
+  var guild = message.guild
+  var embed = new Discord.RichEmbed()
     .setAuthor("Message Deleted")
     .addField("Message Author", `${message.author.username}#${message.author.discriminator}`, false)
     .setColor(guild.member(client.user).highestRole.color)
@@ -80,28 +101,41 @@ client.on("messageDelete", message => {
   		}
   	}
 
-    const logchannel = guild.channels.get(config[guild.id].logchannelID)
-    logchannel.send({embed})
+    var logchannel = guild.channels.get(config[guild.id].messagelogchannelID)
+    if(!logchannel){
+      logchannel = guild.channels.get(config[guild.id].logchannelID)
+    }
+
+    logchannel.send(`**Message delete log for: **<@${message.author.id}>`, {embed})
 })
 
 client.on("messageUpdate", (oldMessage, newMessage) => {
-  if(oldMessage.content.length == 0){
+
+  if(oldMessage.content.length == 0 || oldMessage.author.id === client.user.id || oldMessage.content == newMessage.content){
     return;
-  }else if(newMessage.content.length == 0){
+  }else if(newMessage.content.length == 0 || newMessage.author.id === client.user.id){
     return;
   }
-  const guild = newMessage.guild
-  const embed = new Discord.RichEmbed()
+  var guild = newMessage.guild
+  var embed = new Discord.RichEmbed()
     .setAuthor("Message Edited")
-    .addField("Message Author", `${newMessage.author.username}#${newMessage.author.discriminator}`, false)
+    .addField("Message Author", `${newMessage.author.tag}`, false)
     .addField("Old Message Content", oldMessage.content, false)
     .addField("New Message Content", newMessage.content, false)
     .setColor(guild.member(client.user).highestRole.color)
     .setThumbnail(newMessage.author.avatarURL)
     .setTimestamp(new Date())
 
-  const logchannel = guild.channels.get(config[guild.id].logchannelID)
-  logchannel.send({embed})
+    var logchannel = guild.channels.get(config[guild.id].messagelogchannelID)
+    if(!logchannel){
+      logchannel = guild.channels.get(config[guild.id].logchannelID)
+    }
+
+    var userTagForMessage = newMessage.author.id
+    if(!userTagForMessage){
+      userTagForMessage = oldMessage.author.id
+    }
+    logchannel.send(`**Message edit log for: **<@${userTagForMessage}>`, {embed})
 
 })
 
@@ -109,7 +143,6 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
   var embed = new Discord.RichEmbed();
   var guild = oldMember.guild
   var user = newMember.nickname
-
 
     var voicelogchannel = guild.channels.get(config[guild.id].voicelogchannelID)
     if(!voicelogchannel || voicelogchannel === "null"){
@@ -137,53 +170,12 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
     embed.addField("User ID", newMember.id)
     embed.setColor(newMember.guild.member(client.user).highestRole.color)
     embed.setTimestamp(newMember.createdAt)
-    voicelogchannel.send({embed}).catch(console.log)
-})
-//Starboard message reaction
-client.on("messageReactionAdd", (messageReaction, user) =>{
 
-  if(messageReaction.emoji.toString != "⭐"){return;}
-
-  var serverid = messageReaction.message.guild.id
-
-  sql.get(`SELECT * FROM channels WHERE serverid = "${serverid}"`).then(row => {
-    if(!row){
-      message.channel.send("There is no log channel for this server. Please set one up and edit the channel topic.");
-    }else{
-      var logchannel = messageReaction.message.guild.channels.get(row.channelid);
-      var topicString = logchannel.topic;
-
-      if(!topicString){
-        message.channel.send("There is no config information to be displayed. Please set up config information in the topic of the log channel.");
-      }
-
-      let configuration = topicString.split(";");
-        if(configuration.includes("starboard")){
-          //messageReaction.message.channel.send("The starboard has been disabled by an administrator. DM them if you think this is an error.")
-          return;
-        }else{
-          //if(messageReaction.emoji.toString != "⭐"){return;}
-          //if(messageReaction.me = true){return;}
-
-          let msg = messageReaction.message;
-          let guild = msg.guild;
-          let userid = msg.author.id;
-          let content = msg.content;
-            if(!content){content = "No Content (Could be an image or an embed?)"}
-          let starboardchan =  guild.channels.find("name", "starboard");
-            if(!starboardchan){starboardchan = logchannel;}
-
-          const embed = new Discord.RichEmbed()
-            .setTimestamp(new Date())
-            .setAuthor("New Starred Post")
-            .addField(guild.members.get(userid).displayName, content)
-            .setColor([255, 172, 51])
-
-          starboardchan.send({embed})
-          //console.log(embed.fields)
-        }
-      }
-  })
+    var userTagForMessage = user.id
+    if(!user.id){
+      userTagForMessage = oldMember.id
+    }
+    voicelogchannel.send(`**Voice Log Information for: **<@${userTagForMessage}>`, {embed}).catch(console.log)
 })
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
@@ -199,6 +191,10 @@ fs.readdir("./events/", (err, files) => {
 
 client.on("message", message => {
 
+  if(message.content === `<@${client.user.id}>`){
+    var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+    message.channel.send(randomAnswer)
+  }
   if(message.channel.type === "dm"){return;}
 
   let command = message.content.split(" ")[0];
@@ -206,7 +202,7 @@ client.on("message", message => {
 
   let guild = message.guild
 
-  const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+  var logchannel = message.guild.channels.get(config[guild.id].logchannelID)
 
   /*if ((client.user.id === message.author.id) && (message.channel.id != logchannel) && (config[guild.id].autoCleanUpBlacklist.indexOf(command) == -1) && message.content.indexOf("Tag Request") == -1){
     message.delete(15000).catch(console.log)

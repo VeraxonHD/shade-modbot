@@ -63,6 +63,7 @@ exports.run = (client, message, args, Discord) => {
   }else if(args[0] == "list"){ //List all Tags
     message.channel.send(`**This Server's Custom Tags:** \n ${JSON.stringify(taglist[guild.id], null, "\t")}`)
     message.channel.send(`**Global Tags:** \n ${JSON.stringify(taglist.global, null, "\t")}`)
+    message.channel.send("**TO USE THESE COMMANDS, TYPE `!!tag <tag name>`, WHERE `<tagname>` IS ONE OF THE TAG NAMES ABOVE.** \n These commands are available to be used from any channel, at any time. Only staff can change these.")
   }else{ //Display Tag
     var tagname = args[0].toString();
 
