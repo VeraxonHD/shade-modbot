@@ -3,8 +3,15 @@ exports.run = (client, message, args, Discord) => {
   var config = require("../config.json");
   var jsonfile = require("jsonfile");
   var user = message.mentions.users.first();
+  if(user.id == client.user.id){
+    return message.channel.send("Stop! You violated the law! Pay the court a fine or serve your sentence! Your stolen goods are now forfeit. <https://www.youtube.com/watch?v=O2otihe65SI>")
+  }
   var guild = message.guild;
   var logchannel = message.guild.channels.get(config[guild.id].modlogchannelID);
+  var reason = args.slice(1).join(" ")
+  if(!reason){
+    reason = "No Reason"
+  }
 
   if(!logchannel || logchannel === "null"){
     logchannel = message.guild.channels.get(config[guild.id].logchannelID);
@@ -29,7 +36,7 @@ exports.run = (client, message, args, Discord) => {
         .setTimestamp(message.createdAt)
         .addField("User Warned:", user)
         .addField("Warned By: ", message.author.username, true)
-        .addField("Reason: ", args.slice(1).join(" "), true)
+        .addField("Reason: ", reason, true)
         .addField("Current total warnings: ", warnings[user.id], true)
         .setFooter("Automated Mod Logging");
       logchannel.send(`**Infraction for:** ${user}`, {embed});

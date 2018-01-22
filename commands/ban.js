@@ -4,8 +4,15 @@ exports.run = (client, message, args, Discord, sql) => {
   //The targeted channel (aka mod log channel)
   //the user to be banned
   var banneduser = message.mentions.users.first()
+  if(banneduser.id == client.user.id){
+    return message.channel.send("Try banning me again you fuckwit.")
+  }
   //saves the ban perms in a compact variable
   let banPerms = message.channel.guild.member(client.user.id).hasPermission("BAN_MEMBERS")
+  var reason = args.slice(1).join(" ");
+  if(!reason){
+    reason = "No Reason";
+  }
 
   if(!guild.members.get(message.author.id).hasPermission("BAN_MEMBERS")){return react.noPermReact()};
 
@@ -25,7 +32,7 @@ exports.run = (client, message, args, Discord, sql) => {
           .setTimestamp(message.createdAt)
           .addField("User Banned: ", banneduser, true)
           .addField("Banned By: ", message.author.username, true)
-          .addField("Reason: ", args.slice(1).join(" "), true)
+          .addField("Reason: ", reason, true)
           .setFooter("Automated Mod Logging");
           //sends the embed
 

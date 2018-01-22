@@ -7,10 +7,8 @@
         "modlogchannelID": "401118153398026245",
         "voicelogchannelID": "402065349014454274",
         "autoCleanUpBlacklist": "google userinfo eval",
-        "mute": {
-            "roleName": "Muted",
-            "message": "null"
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "Baiters Guardian",
         "joinLogChannel": "292941255976026114"
     },
@@ -21,11 +19,11 @@
         "logchannelID": "299712887314972673",
         "modlogchannelID": "150138495774621697",
         "voicelogchannelID": "353793934616559617",
+        "joinlogchannelID": "299712887314972673",
+        "messagelogchannelID": "405076129196802048",
         "autoCleanUpBlacklist": "null",
-        "mute": {
-            "roleName": "Muted",
-            "message": "You have disavowed The Division for breaking the rules of conduct and as such have been made Rogue."
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "na eu xb1 ps4 pc uk aus hk",
         "joinLogChannel": "137719638556540929"
     },
@@ -37,10 +35,8 @@
         "modlogchannelID": "null",
         "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
-        "mute": {
-            "roleName": "Muted",
-            "message": "null"
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "null",
         "joinLogChannel": "240801631875235840"
     },
@@ -55,10 +51,8 @@
         "modlogchannelID": "null",
         "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
-        "mute": {
-            "roleName": "Muted",
-            "message": "null"
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "null",
         "joinLogChannel": "338441119836667904"
     },
@@ -70,10 +64,8 @@
         "modlogchannelID": "null",
         "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google userinfo",
-        "mute": {
-            "roleName": "Muted",
-            "message": "null"
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "Crucible PvE",
         "joinLogChannel": "373828154135019532"
     },
@@ -85,10 +77,8 @@
         "modlogchannelID": "null",
         "voicelogchannelID": "null",
         "autoCleanUpBlacklist": "google serverinfo userinfo",
-        "mute": {
-            "roleName": "Muted",
-            "message": "null"
-        },
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
         "selfRoles": "null",
         "joinLogChannel": "384274772001030165"
     }
