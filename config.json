@@ -81,5 +81,18 @@
         "muteMessage": "null",
         "selfRoles": "null",
         "joinLogChannel": "384274772001030165"
+    },
+    "391798629872173066": {
+        "disabledCommands": "userinfo mute kick ban warn botinfo serverinfo help tag selfrole role unmute newpoll configure riotcontrol riotrepeal",
+        "disabledEvents": "memberLog",
+        "disabledMisc": "null",
+        "logchannelID": "405445141134966814",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
+        "autoCleanUpBlacklist": "google serverinfo userinfo",
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
+        "selfRoles": "null",
+        "joinLogChannel": "null"
     }
 }

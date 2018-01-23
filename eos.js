@@ -4,6 +4,7 @@ var fs = require("fs");
 var sql = require('sqlite');
 var prefix = (process.env.PREFIX)
 var config = require("./config.json")
+var dateformat = require("dateformat");
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -106,7 +107,7 @@ client.on("messageDelete", message => {
       logchannel = guild.channels.get(config[guild.id].logchannelID)
     }
 
-    logchannel.send(`**Message delete log for: **<@${message.author.id}>`, {embed})
+    logchannel.send(`**Message delete log for: **${message.author.tag}`, {embed})
 })
 
 client.on("messageUpdate", (oldMessage, newMessage) => {
@@ -131,18 +132,18 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
       logchannel = guild.channels.get(config[guild.id].logchannelID)
     }
 
-    var userTagForMessage = newMessage.author.id
+    var userTagForMessage = newMessage.author.tag
     if(!userTagForMessage){
-      userTagForMessage = oldMessage.author.id
+      userTagForMessage = oldMessage.author.tag
     }
-    logchannel.send(`**Message edit log for: **<@${userTagForMessage}>`, {embed})
+    logchannel.send(`**Message edit log for: **${userTagForMessage}`, {embed})
 
 })
 
 client.on("voiceStateUpdate", (oldMember, newMember) => {
   var embed = new Discord.RichEmbed();
   var guild = oldMember.guild
-  var user = newMember.nickname
+  var user = newMember.user
 
     var voicelogchannel = guild.channels.get(config[guild.id].voicelogchannelID)
     if(!voicelogchannel || voicelogchannel === "null"){
@@ -150,15 +151,15 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
     }
 
     if(!user){
-      user = newMember.user.username
+      user = newMember.user
     }
 
     if(!oldMember.voiceChannel){
-      embed.addField("User joined a voice channel", `${user} joined ${newMember.voiceChannel.name}.`, true)
+      embed.addField("User joined a voice channel", `${user.tag} joined ${newMember.voiceChannel.name}.`, true)
     }else if(!newMember.voiceChannel){
-      embed.addField("User disconnected from voice channels", `${user} left ${oldMember.voiceChannel.name}.`, true)
+      embed.addField("User disconnected from voice channels", `${user.tag} left ${oldMember.voiceChannel.name}.`, true)
     }else{
-      embed.setAuthor(`${user} changed voice channels.`)
+      embed.setAuthor(`${user.tag} changed voice channels.`)
       if((oldMember.mute == true) || (oldMember.deaf == true) || (newMember.mute == true) || (newMember.deaf == true)){
         return;
       }else{
@@ -171,11 +172,11 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
     embed.setColor(newMember.guild.member(client.user).highestRole.color)
     embed.setTimestamp(newMember.createdAt)
 
-    var userTagForMessage = user.id
-    if(!user.id){
-      userTagForMessage = oldMember.id
+    var userTagForMessage = user.tag
+    if(!userTagForMessage){
+      userTagForMessage = user.tag
     }
-    voicelogchannel.send(`**Voice Log Information for: **<@${userTagForMessage}>`, {embed}).catch(console.log)
+    voicelogchannel.send(`**Voice Log Information for: **${userTagForMessage}`, {embed}).catch(console.log)
 })
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
@@ -189,6 +190,56 @@ fs.readdir("./events/", (err, files) => {
   });
 });
 
+//MODMAIL MESSAGE EVENT [CREATING THE CHANNEL/SENDING CORRESPONDENCE THROUGH BOT BY USER]
+client.on("message", message => {
+  var tdGuild = client.guilds.find("id", "137719638556540929");
+  var mmGuild = client.guilds.find("id", "391798629872173066");
+  if(message.channel.type != "dm" || !tdGuild.members.get(message.author.id) || message.author.id === client.user.id){
+    return;
+  }else{
+    var threadChan = mmGuild.channels.find("name", `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
+    if(!threadChan){
+      mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
+        newChan.setTopic(message.author.id)
+        newChan.send(`New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
+        newChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
+      }).catch(err => console.log(err))
+    }else{
+      threadChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
+    }
+  }
+})
+
+//MODMAIL CHANNEL COMMAND HANDLING
+client.on("message", message => {
+  var mmprefix = "!";
+  var tdGuild = client.guilds.find("id", "137719638556540929");
+  var mmGuild = client.guilds.find("id", "391798629872173066");
+
+  if(message.content.startsWith(mmprefix) && message.guild.id == mmGuild.id){
+    let command = message.content.split(" ")[0];
+    command = command.slice(mmprefix.length);
+    var guild = message.guild;
+    var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
+    let args = message.content.split(" ").slice(1);
+
+    try {
+      let commandFile = require(`./modmailcommands/${command}.js`);
+
+      if(config[guild.id].disabledCommands.indexOf(command) == -1){
+        commandFile.run(client, message, args, Discord, guild, command);
+      }else{
+        return(message.channel.send("This command has been disabled by a server administrator."));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }else{
+    return;
+  }
+})
+
+//GENERAL COMMANDS
 client.on("message", message => {
 
   if(message.content === `<@${client.user.id}>`){
@@ -227,7 +278,7 @@ client.on("message", message => {
 
     var serverid = guild.id;
 
-    if(config[guild.id].disabledCommands.indexOf(command) == -1 || commandFile.alias.indexOf(command) != -1){
+    if(config[guild.id].disabledCommands.indexOf(command) == -1){
       commandFile.run(client, message, args, Discord, guild, command)
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
