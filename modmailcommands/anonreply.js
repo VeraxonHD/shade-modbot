@@ -5,4 +5,6 @@ exports.run = (client, message, args, Discord) => {
   var dateformat = require("dateformat");
 
   target.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <A Staff Member>** - ${content}`);
+  message.delete();
+  message.channel.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <A Staff Member>** - ${content}`);
 }

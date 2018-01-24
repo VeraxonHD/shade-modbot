@@ -102,6 +102,8 @@ client.on("messageDelete", message => {
   		}
   	}
 
+    embed.addField("Channel", "#" + message.channel.name);
+    
     var logchannel = guild.channels.get(config[guild.id].messagelogchannelID)
     if(!logchannel){
       logchannel = guild.channels.get(config[guild.id].logchannelID)
@@ -123,6 +125,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
     .addField("Message Author", `${newMessage.author.tag}`, false)
     .addField("Old Message Content", oldMessage.content, false)
     .addField("New Message Content", newMessage.content, false)
+    .addField("Channel", "#" + newMessage.channel.name)
     .setColor(guild.member(client.user).highestRole.color)
     .setThumbnail(newMessage.author.avatarURL)
     .setTimestamp(new Date())
@@ -216,7 +219,7 @@ client.on("message", message => {
   var tdGuild = client.guilds.find("id", "137719638556540929");
   var mmGuild = client.guilds.find("id", "391798629872173066");
 
-  if(message.content.startsWith(mmprefix) && message.guild.id == mmGuild.id){
+  if(message.content.startsWith(mmprefix) && message.channel.type != "dm" && message.guild.id == mmGuild.id){
     let command = message.content.split(" ")[0];
     command = command.slice(mmprefix.length);
     var guild = message.guild;
