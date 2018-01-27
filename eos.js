@@ -5,6 +5,7 @@ var sql = require('sqlite');
 var prefix = (process.env.PREFIX)
 var config = require("./config.json")
 var dateformat = require("dateformat");
+var commandJSON = require("./commands.json")
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -103,7 +104,7 @@ client.on("messageDelete", message => {
   	}
 
     embed.addField("Channel", "#" + message.channel.name);
-    
+
     var logchannel = guild.channels.get(config[guild.id].messagelogchannelID)
     if(!logchannel){
       logchannel = guild.channels.get(config[guild.id].logchannelID)
@@ -227,6 +228,11 @@ client.on("message", message => {
     let args = message.content.split(" ").slice(1);
 
     try {
+      if(command == "r"){
+        command = "reply"
+      }else if(command == "ar"){
+        command = "anonreply"
+      }
       let commandFile = require(`./modmailcommands/${command}.js`);
 
       if(config[guild.id].disabledCommands.indexOf(command) == -1){
@@ -249,34 +255,25 @@ client.on("message", message => {
     var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
     message.channel.send(randomAnswer)
   }
-  if(message.channel.type === "dm"){return;}
-
-  let command = message.content.split(" ")[0];
-  command = command.slice(prefix.length);
-
-  let guild = message.guild
-
-  var logchannel = message.guild.channels.get(config[guild.id].logchannelID)
-
-  /*if ((client.user.id === message.author.id) && (message.channel.id != logchannel) && (config[guild.id].autoCleanUpBlacklist.indexOf(command) == -1) && message.content.indexOf("Tag Request") == -1){
-    message.delete(15000).catch(console.log)
-  }
-
-  if (message.content.startsWith(prefix) && (command != "prune") && (command != "tag")) {
-    message.delete(15000).catch(console.log)
-  }
-  */
-
-  if (!message.content.startsWith(prefix)) return
+  if(message.channel.type === "dm") return;
+  if(!message.content.startsWith(prefix)) return;
 
   exports.noPermReact = () => {
     return message.channel.send(`Shade - \`Error\` - You do not have permission to perform that command.`)
       .then(message => message.react('❎'))
     };
 
+  let guild = message.guild;
+  var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
+  var commandDir = fs.readdirSync("./commands");
   let args = message.content.split(" ").slice(1);
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
 
   try {
+    if(command == "ui"){
+      command = "userinfo"
+    }
     let commandFile = require(`./commands/${command}.js`);
 
     var serverid = guild.id;
@@ -286,22 +283,8 @@ client.on("message", message => {
     }else{
       return(message.channel.send("This command has been disabled by a server administrator."))
     }
-  } catch (err) {/*
-    console.log("\nAn error occured.")
-    console.log(`Attempted command: ${command}`)
-    console.log(`Username: ${message.author.tag}`)
-    console.log("Error Code: " + err.code + "\n")
-    //console.log(`Client Error Code: ${client.error.code}`)
-
-    var embed = new Discord.RichEmbed()
-      .addField("Error!", "Oops! An error has occured. Give me a second to look it over.")
-      .addField("Error Details", `Error Code: ${err.code}`)
-      .setTimestamp(new Date())
-      .setColor("#ff0000")
-    message.reply({embed})
-*/
+  } catch (err) {
     console.log(err)
-
   }
 });
 
