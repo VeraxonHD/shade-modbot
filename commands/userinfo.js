@@ -5,9 +5,12 @@ exports.run = (client, message, args, Discord) => {
   var userid = username.id;
   var guild = message.guild;
   var nickname = guild.members.get(userid).displayName;
-  var joined = guild.members.get(userid).joinedAt;
+  var joined = guild.members.get(userid).joinedTimestamp;
   var lastmessage = guild.members.get(userid).lastMessage;
-  var warnings = require("../warnings.json")
+  var warnings = require("../warnings.json");
+  var moment = require("moment");
+
+  var diff = moment(joined).toNow(true);
 
   if(!warnings[userid]){
     var warningCount = 0
@@ -24,7 +27,7 @@ exports.run = (client, message, args, Discord) => {
     .setTimestamp(message.createdAt)
     .addField("User info for", username.tag, true)
     .addField("User ID", userid, true)
-    .addField("Joined", dateformat(joined, "dd/mm/yyyy \nhh:MM:ss") + " GMT", true)
+    .addField("Joined", `${dateformat(joined, "dd/mm/yyyy \nhh:MM:ss")} GMT **(${diff} ago)**`, true)
     .setFooter(`Requested by ${message.author.username}`)
     .addField("Warnings", warningCount, true)
     .setThumbnail(username.avatarURL);
