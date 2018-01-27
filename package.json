@@ -19,7 +19,8 @@
     "ms": "2.0.0",
     "request": "2.81.0",
     "sqlite": "2.8.0",
-    "dateformat" : "3.0.2"
+    "dateformat" : "3.0.2",
+    "pastebin-js" : "0.5.1"
   },
   "devDependencies": {},
   "repository": {

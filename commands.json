@@ -1,0 +1,43 @@
+{
+  "ban" :{
+    "usage" : "!!ban <user> [reason]",
+    "description" : "Bans a user from the server.",
+    "permission" : "BAN_MEMBERS"
+  },
+  "kick" :{
+    "usage" : "!!kick <user> [reason]",
+    "description" : "Kicks a user from the server.",
+    "permission" : "KICK_MEMBERS"
+  },
+  "warn" :{
+    "usage" : "!!warn <user> [reason]",
+    "description" : "Adds a warning to a user. Warn counter viewable in userinfo.",
+    "permission" : "BAN_MEMBERS"
+  },
+  "mute" :{
+    "usage" : "!!mute <user> <time with following unit (e.g 50s/1h/1d)> [reason]",
+    "description" : "Adds a muted role to a user (customisable through config). Role must be set up prior.",
+    "permission" : "MANAGE_MESSAGES"
+  },
+  "unmute" :{
+    "usage" : "!!unmute <user>",
+    "description" : "Removes the muted role.",
+    "permission" : "MANAGE_MESSAGES"
+  },
+  "userinfo" :{
+    "alias" : "ui",
+    "usage" : "!!userinfo <user>",
+    "description" : "Gets summary statistic data on users.",
+    "permission" : "n/a"
+  },
+  "prune" :{
+    "usage" : "!!prune [user] <amount>",
+    "description" : "Removes commands em masse.",
+    "permission" : ""
+  },
+  "tag" :{
+    "usage" : "!!tag [name/list/create/delete] [name (c/d)] [content (c)]",
+    "description" : "Tags are custom commands. They respond with a message when called.",
+    "permission" : "C/D = MANAGE_MESSAGES, else NONE"
+  }
+}

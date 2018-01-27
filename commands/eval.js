@@ -1,8 +1,9 @@
 exports.run = (client, message, params, command) => {
-
   const config = require("../config.json");
-  const guild = message.guild
-
+  const guild = message.guild;
+  const tags = require("../tags.json");
+  const warnings = require("../warnings.json");
+  const commands = require("../commands.json");
   if(message.author.id != config.general.ownerID) return
 
   function clean(text) {
