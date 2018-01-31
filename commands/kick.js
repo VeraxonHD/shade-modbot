@@ -5,8 +5,15 @@ exports.run = (client, message, args, Discord, sql) => {
   //const tgtchannel = message.guild.channels.find('name', 'log-channel')
   //the user to be kicked
   var kickeduser = message.mentions.users.first()
+  if(kickeduser.id == client.user.id){
+    return message.channel.send("Why you gotta be so rude? Don't you know I'm Human too?")
+  }
   //saves the kick perms in a compact variable
   let kickPerms = message.channel.guild.member(client.user.id).hasPermission("KICK_MEMBERS")
+  var reason = args.slice(1).join(" ");
+  if(!reason){
+    reason = "No Reason";
+  }
 
 if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return react.noPermReact()}
   //if the bot doesn't have the permissions
@@ -17,7 +24,7 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
         //send the confirmation message, add a react and kick the user
         if (args.length >= 2){
         message.guild.member(kickeduser).kick()
-        .then(message.channel.send("Eos \`Success`\ - User kicked successfully.")
+        .then(message.channel.send("Shade \`Success`\ - User kicked successfully.")
         .then(message=>message.react('✅')));
         //builds the embed for the log channelOh
         const embed = new Discord.RichEmbed()
@@ -25,18 +32,18 @@ if(!guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")){return r
           .setTimestamp(message.createdAt)
           .addField("User Kicked: ", kickeduser, true)
           .addField("Kicked By: ", message.author.username, true)
-          .addField("Reason: ", args.slice(1).join(" "), true)
+          .addField("Reason: ", reason, true)
           .setFooter("Automated Mod Logging");
           //sends the embed
-          sql.get(`SELECT * FROM channels WHERE serverid = "${guild.id}"`).then(row => {
-              var tgtchannel = message.guild.channels.get(row.channelid)
-              tgtchannel.send({embed})
-          }).catch(err => {
-            console.log(err)
-          })
+          const config = require ("../config.json")
+          const logchannel = message.guild.channels.get(config[guild.id].modlogchannelID)
+          if(!logchannel || logchannel === "null"){
+            logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+          }
+          logchannel.send(`**Infraction for: **${kickeduser}`, {embed}).catch(console.log)
 
         }else{
-          message.reply("Eos \`Error`\ - You must add a reason!")
+          message.reply("Shade \`Error`\ - You must add a reason!")
           .then(message=>message.react('❎'));
       }
     }

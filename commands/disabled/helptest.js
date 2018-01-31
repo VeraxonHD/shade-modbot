@@ -6,18 +6,19 @@ exports.run = (client, message, args, Discord) => {
   const numReacts = ["1⃣", "2⃣", "3⃣", "4⃣", "5⃣", "6⃣", "7⃣"]
   const embed = new Discord.RichEmbed()
     .setThumbnail(client.user.avatarURL)
-    .addField("Eos Help GUI", "Select one of the emoji below to find information on a command!")
-    .addField("Eos GitHub", "https://github.com/VeraxonHD/eos-modbot/")
+    .addField("Shade Help GUI", "Select one of the emoji below to find information on a command!")
+    .addField("Shade GitHub", "https://github.com/VeraxonHD/shade-modbot/")
 
   message.channel.send({embed})
     .then(m => {
-
-      async function numReactFunc(param){
-        m.react(param)
+      try {
+        m.react("1⃣")
+        .then(m.react("2⃣"))
+        .then(m.react("3⃣"))
+      } catch (err){
+        console.log(err)
       }
-
-      for (i = 0; i < numReacts.length; i++) {
-        await numReactFunc(numReacts[i])
-      }
-    })
+    }).catch(
+      console.log()
+    )
 }

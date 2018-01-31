@@ -1,19 +1,33 @@
 exports.run = (client, message, args, Discord) => {
-  const embed = new Discord.RichEmbed()
-    .setAuthor('Help for Eos', 'https://github.com/VeraxonHD/eos-modbot/wiki/Commands-and-their-uses')
-    .setColor(message.guild.member(client.user).highestRole.color)
-    .setTimestamp(message.createdAt)
-    .addField("Reload", "Reloads a command. Only accessable by the bot owner, Vex.", true)
-    .addField("Ping", "Test to see if the bot is active.", true)
-    .addField("Prune", "Prunes x amount of messages.\nRequires 'MANAGE_MESSAGES' permissions.", true)
-    .addField("Ban", "Bans a user.\nRequires 'BAN_MEMBERS' permissions and a reason.", true)
-    .addField("Kick", "Kicks a user.\nRequires 'KICK_MEMBERS' permissions and a reason.", true)
-    .addField("Mute", "Mutes a user.\nRequires 'MANAGE_MESSAGES' permissions and a reason.", true)
-    .addField("Warn", "Adds a warning to a user's file.\nRequires 'KICK_MEMBERS' permissions and a reason. 3 warns = auto-kick.", true)
-    .addField("Tag", "Creates/Deletes/Views a tag.\nRequires 'MANAGE_MESSAGES' permissions to create/delete.\nUsage: !tag <create|delete|{tagname}> <tagname> {content}", true)
-    .addField("Google", "Searches Google and lists the top 3 results.\nUsage: !google <query>", true)
-    .addField("logchannel", "Gets/Sets log channel\nRequires 'MANAGE_MESSAGES' permissions\nUsage: !logchannel<get|set> <id>", true)
-    //sends the embed
-    message.channel.send({embed})
-      .then(message=>message.react('ℹ️'));
+  var commands = require("../commands.json");
+  var commandName = args[0];
+
+  var aliases = ""
+  if(!commands[commandName].alias){
+    aliases = "None"
+  }else{
+    aliases = commands[commandName].alias.split(" ").join(", ")
+  }
+    if(commandName){
+      const embed = new Discord.RichEmbed()
+        .setAuthor(`Info for ${commandName}`)
+        .addField("Aliases", aliases, true)
+        .addField("Usage", commands[commandName].usage, true)
+        .addField("Description", commands[commandName].description, true)
+        .addField("Permissions", commands[commandName].permission, true)
+        .setColor(message.guild.member(client.user).highestRole.color)
+        .setTimestamp(message.createdAt);
+
+        message.channel.send({embed});
+    }else{
+      const embed = new Discord.RichEmbed()
+        .setAuthor('Help for Shade', 'https://github.com/VeraxonHD/eos-modbot/wiki/Commands-and-their-uses')
+        .setColor(message.guild.member(client.user).highestRole.color)
+        .setTimestamp(message.createdAt)
+        .addField("List of Commands can be found here", "http://veraxonhd.me/eos-commands.html");
+
+        message.channel.send({embed});
+    }
+
+
 }
