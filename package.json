@@ -13,14 +13,14 @@
     "babel-polyfill": "6.23.0",
     "babel-runtime": "6.23.0",
     "cheerio": "1.0.0-rc.2",
-    "discord.js": "11.1.0",
+    "dateformat": "3.0.2",
+    "discord.js": "^11.3.0",
     "jsonfile": "^4.0.0",
     "moment": "^2.20.1",
     "ms": "2.0.0",
+    "pastebin-js": "0.5.1",
     "request": "2.81.0",
-    "sqlite": "2.8.0",
-    "dateformat" : "3.0.2",
-    "pastebin-js" : "0.5.1"
+    "sqlite": "2.8.0"
   },
   "devDependencies": {},
   "repository": {

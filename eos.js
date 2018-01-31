@@ -27,9 +27,9 @@ client.on('ready', () => {
   console.log("Prefix is: " + prefix)
   console.log("Shade is R E A D Y.")
   client.user.setUsername("Shade")
+  client.user.setActivity("http://veraxonhd.me/")
   .then(user => console.log("My name has changed to Shade."))
   .catch(console.error)
-  client.user.setGame("!!help").catch(console.log)
 });
 
 client.on("guildMemberRemove", member => {
@@ -202,12 +202,14 @@ client.on("message", message => {
     return;
   }else{
     var threadChan = mmGuild.channels.find("name", `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
+    var categoryChannel = mmGuild.channels.get("391808224489242626")
     if(!threadChan){
       mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
-        newChan.setTopic(message.author.id)
+        newChan.setParent(categoryChannel);
+        newChan.setTopic(message.author.id);
         newChan.send(`@here - New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
         newChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
-      }).catch(err => console.log(err))
+      }).catch(err => console.log(err));
     }else{
       threadChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
     }
