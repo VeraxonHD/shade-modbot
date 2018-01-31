@@ -27,7 +27,7 @@ client.on('ready', () => {
   console.log("Prefix is: " + prefix)
   console.log("Shade is R E A D Y.")
   client.user.setUsername("Shade")
-  client.user.setActivity("http://veraxonhd.me/")
+  client.user.setActivity("!!help for assistance.")
   .then(user => console.log("My name has changed to Shade."))
   .catch(console.error)
 });
