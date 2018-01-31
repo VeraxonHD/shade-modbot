@@ -44,7 +44,7 @@ client.on("guildMemberRemove", member => {
     embed.setThumbnail(member.user.avatarURL)
 
     if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
-      var joinLogChannel = guild.channels.get(config[guild.id].joinlogchannelID)
+      var joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
       joinLogChannel.send(`${member.displayName} has left the server! Bye!`)
     }
 
@@ -68,7 +68,7 @@ client.on("guildMemberAdd", member => {
     embed.setColor(guild.member(client.user).highestRole.color)
     embed.setThumbnail(member.user.avatarURL)
 
-    var joinLogChannel = guild.channels.get(config[guild.id].joinlogchannelID)
+    var joinLogChannel = guild.channels.get(config[guild.id].joinLogChannel)
     if(config[guild.id].disabledMisc.indexOf("memberLog") == -1){
       joinLogChannel.send(`${member.displayName} has joined the server! Welcome!`)
     }
@@ -205,7 +205,7 @@ client.on("message", message => {
     if(!threadChan){
       mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
         newChan.setTopic(message.author.id)
-        newChan.send(`New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
+        newChan.send(`@here - New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
         newChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
       }).catch(err => console.log(err))
     }else{
