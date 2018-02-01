@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
     return message.reply("That role has not been created. Please contact a server administrator!")
   }
 
-  if(config[guild.id].selfRoles.indexOf(role) !== 0){
+  if(config[guild.id].selfRoles.indexOf(args[0]) != -1){
     if(guild.member(user).roles.has(role.id)){
       guild.member(user).removeRole(role)
       message.reply("You have removed the " + role.name + " role!")
