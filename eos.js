@@ -218,7 +218,7 @@ client.on("message", message => {
 
 //MODMAIL CHANNEL COMMAND HANDLING
 client.on("message", message => {
-  var mmprefix = "!";
+  var mmprefix = ".";
   var tdGuild = client.guilds.find("id", "137719638556540929");
   var mmGuild = client.guilds.find("id", "391798629872173066");
 
