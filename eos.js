@@ -253,10 +253,16 @@ client.on("message", message => {
 //GENERAL COMMANDS
 client.on("message", message => {
 
+  let guild = message.guild;
+  var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
+  var commandDir = fs.readdirSync("./commands");
+  let args = message.content.split(" ").slice(1);
+
   if(message.content === `<@${client.user.id}>`){
     var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
     message.channel.send(randomAnswer)
   }
+
   if(message.channel.type === "dm") return;
   if(!message.content.startsWith(prefix)) return;
 
@@ -265,10 +271,6 @@ client.on("message", message => {
       .then(message => message.react('❎'))
     };
 
-  let guild = message.guild;
-  var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
-  var commandDir = fs.readdirSync("./commands");
-  let args = message.content.split(" ").slice(1);
   let command = message.content.split(" ")[0];
   command = command.slice(prefix.length);
 
@@ -289,6 +291,29 @@ client.on("message", message => {
     console.log(err)
   }
 });
+
+//AUTOMOD
+client.on("message", message =>{
+  
+  function testRegEx(regex){
+    var regexToTest = new RegExp(regex);
+    return regexToTest.test(message.content);
+  }
+  var guild = message.guild;
+
+  if(message.member.highestRole.comparePositionTo(guild.members.get(client.user.id).highestRole) >= 0 || message.member.hasPermission("MANAGE_MESSAGES")){
+    return;
+  }else{
+    if(testRegEx("(discord\.gg/)") && config[message.guild.id].disabledAutoMod.indexOf("discordLinks") == -1){
+      message.delete();
+    }
+    /*if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
+      message.delete();
+    }*/
+  }
+
+  
+})
 
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n", err);
