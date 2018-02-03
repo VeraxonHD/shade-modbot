@@ -2,10 +2,11 @@ var Discord = require("discord.js");
 var client = new Discord.Client();
 var fs = require("fs");
 var sql = require('sqlite');
-var prefix = (process.env.PREFIX)
-var config = require("./config.json")
+var prefix = (process.env.PREFIX);
+var config = require("./config.json");
 var dateformat = require("dateformat");
-var commandJSON = require("./commands.json")
+var commandJSON = require("./commands.json");
+var jsonfile = require("jsonfile");
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -24,12 +25,12 @@ var answers = [
 
 //sends ready echo to console
 client.on('ready', () => {
-  console.log("Prefix is: " + prefix)
-  console.log("Shade is R E A D Y.")
+  console.log("Prefix is: " + prefix);
+  console.log("Shade is R E A D Y.");
   client.user.setUsername("Shade")
-  .then(user => console.log("My name has changed to Shade."))
-  client.user.setActivity("!!help for assistance.")
-  .catch(console.error)
+  .then(user => console.log("My name has changed to Shade."));
+  client.user.setActivity("Shade is currently in development. Expect double posts.");
+  client.user.setStatus("idle");
 });
 
 client.on("guildMemberRemove", member => {
@@ -183,6 +184,45 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
     voicelogchannel.send(`**Voice Log Information for: **${userTagForMessage}`, {embed}).catch(console.log)
 })
 
+//ON CLIENT JOIN (CONFIG SETUP)
+client.on("guildCreate", guild =>{
+  var logchannelIDFinder = guild.channels.find("name", "log-channel").id;
+  if(!logchannelIDFinder){
+    logchannelIDFinder = "null"
+  }
+  if(!config[guild.id]){
+    config[guild.id] = {
+      "disabledCommands" : "null",
+      "disabledEvents" : "null",
+      "disabledMisc" : "memberLog",
+      "disabledAutoMod" : "null",
+      "logchannelID" : logchannelIDFinder,
+      "modlogchannelID" : "null",
+      "voicelogchannelID" : "null",
+      "autoCleanUpBlacklist" : "null",
+      "muteRoleName" : "Muted",
+      "muteMessage" : "null",
+      "selfRoles" : "null",
+      "joinLogChannel" : "null"
+    }
+
+    jsonfile.writeFile("config.json", config, {spaces: 4}, err =>{
+      if(!err){
+        const embed = new Discord.RichEmbed()
+          .addField("Welcome to the Shade Community!", "Thanks for adding Shade!")
+          .addField("I highly reccomend you check out the following link for info:", "https://veraxonhd.gitbooks.io/shade-modbot/content/first-time-setup.html")
+          .setColor("#30167c");
+        guild.owner.send({embed}).catch(console.log);
+      }else{
+        console.log(err);
+      }
+    })
+  }else{
+    return
+  }
+
+  
+})
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
@@ -253,6 +293,9 @@ client.on("message", message => {
 //GENERAL COMMANDS
 client.on("message", message => {
 
+  if(message.channel.type === "dm") return;
+  if(!message.content.startsWith(prefix)) return;
+
   let guild = message.guild;
   var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
   var commandDir = fs.readdirSync("./commands");
@@ -262,9 +305,6 @@ client.on("message", message => {
     var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
     message.channel.send(randomAnswer)
   }
-
-  if(message.channel.type === "dm") return;
-  if(!message.content.startsWith(prefix)) return;
 
   exports.noPermReact = () => {
     return message.channel.send(`Shade - \`Error\` - You do not have permission to perform that command.`)
@@ -294,7 +334,7 @@ client.on("message", message => {
 
 //AUTOMOD
 client.on("message", message =>{
-  
+  if(message.channel.type == "dm") return;
   function testRegEx(regex){
     var regexToTest = new RegExp(regex);
     return regexToTest.test(message.content);
@@ -310,6 +350,10 @@ client.on("message", message =>{
     /*if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
       message.delete();
     }*/
+    if(message.mentions.users.size > 5 && config[message.guild.id].disabledAutoMod.indexOf("massMentions") == -1){
+      message.delete();
+    }
+    if()
   }
 
   

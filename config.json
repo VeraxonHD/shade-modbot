@@ -101,5 +101,19 @@
         "muteMessage": "null",
         "selfRoles": "null",
         "joinLogChannel": "null"
+    },
+    "409365548766461952": {
+        "disabledCommands": "null",
+        "disabledEvents": "null",
+        "disabledMisc": "memberLog",
+        "disabledAutoMod": "null",
+        "logchannelID": "409365588117422100",
+        "modlogchannelID": "null",
+        "voicelogchannelID": "null",
+        "autoCleanUpBlacklist": "null",
+        "muteRoleName": "Muted",
+        "muteMessage": "null",
+        "selfRoles": "null",
+        "joinLogChannel": "null"
     }
 }
