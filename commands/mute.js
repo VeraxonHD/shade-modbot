@@ -1,80 +1,62 @@
 exports.run = (client, message, args, Discord, sql) => {
-  var react = require("../eos.js")
-  var guild = message.guild
-  var config = require("../config.json")
+  var guild = message.guild;
+  var config = require("../config.json");
+  var mutes = require("../mutes.json");
+  var mutedRole = guild.roles.find(role => role.name.toLowerCase() === config[guild.id].muteRoleName.toLowerCase());
+  var logchannel = message.guild.channels.get(config[guild.id].modlogchannelID);
+  var user = message.mentions.users.first();
+  var moderator = message.author.username;
+  var ms = require("ms");
+  var time = args[1];
+  var jsonfile = require("jsonfile");
+  var reason = args[2];
+  var dateformat = require("dateformat");
+  var timeFormatted = dateformat(Date.now() + ms(time), "dd/mm/yyyy HH:MM:ss");
 
-  const logchannel = message.guild.channels.get(config[guild.id].modlogchannelID)
   if(!logchannel || logchannel === "null"){
-    logchannel = message.guild.channels.get(config[guild.id].logchannelID)
+    logchannel = message.guild.channels.get(config[guild.id].logchannelID);
   }
-
-
-  let mutedRole = guild.roles.find(role => role.name.toLowerCase() === config[guild.id].muteRoleName.toLowerCase());
   if(!mutedRole){
     mutedRole = guild.roles.find(role => role.name.toLowerCase() === "muted");
+    if(!mutedRole){
+      return message.channel.send("Please add a muted role to the config. You cannot mute someone without such a role. Consult the docs page for more info.");
+    }
   }
-
-  let user = message.mentions.users.first()
   if(user.id == client.user.id){
     return message.channel.send(":(");
   }
-
-  let moderator = message.author.username
-
-  const ms = require("ms")
-  const time = args[1]
-
-  if(!user){return message.reply("Please mention a user.")}
-  if(!time){
-    return message.reply("Please specify a time.")
-  }else if(ms(time) >= 31557600000){
-    return message.channel.send("`User Error` - That mute length is not sensibly long. If you want someone to shut up for a year (or longer), try banning them.")
-  }
-
-  if(!guild.members.get(message.author.id).hasPermission("MANAGE_MESSAGES")){return react.noPermReact()};
-  if (args.length >= 2){
-  function addmute(){
-    guild.member(user).addRole(mutedRole)
-  }
-  setTimeout(addmute, 500)
-
-  var muteMsg = require("../config.json")[guild.id].muteMessage
-  if(!muteMsg || muteMsg === "null"){
-    user.send(`You were muted in ${guild.name} for ${time} by ${moderator}. Please do not break the rules again as further punishment may be dealt.`)
-  }else{
-    user.send(muteMsg)
-  }
-
-  message.channel.send(`Shade \`Success\` - User muted for \`${ms(ms(time), {long: true})}.\`.`)
-  .then(message=>message.react('✅'));
-
-  setTimeout(function() {
-    guild.member(user).removeRole(mutedRole)
-    const unmuteEmbed = new Discord.RichEmbed()
-      .addField(`${user.tag} was unmuted automatically.`, `They were muted for ${time}`)
-      .setTimestamp(message.createdAt)
-      .setColor(message.guild.member(client.user).highestRole.color)
-      .setFooter("Automated Mod Logging");
-    logchannel.send(`**Infraction for: **${user}`, {embed: unmuteEmbed});
-  }, ms(time));
-  var reason = args.slice(2).join(" ")
   if(!reason){
-    reason = "No Reason"
+    reason = "No Reason Supplied.";
   }
+
+  guild.member(user).addRole(mutedRole);
+  mutes[user.id] = {
+    "guild" : guild.id,
+    "time" : Date.now() + ms(time)
+  }
+
+  jsonfile.writeFile("./mutes.json", mutes, {spaces: 4}, err =>{
+    if(!err){
+      message.channel.send("`Eos Success` - User muted successfully.");
+    }else{
+      message.channel.send("`Eos Error` - User could not be muted.");
+      console.log(err);
+    }
+  })
 
   const embed = new Discord.RichEmbed()
-    .setAuthor(`Muted: ${user.username}`)
+    .addField("User Muted", user.username)
+    .addField("Estimated Unmute Time", timeFormatted)
+    .addField("Reason", reason)
+    .addField("Moderator", moderator)
     .setColor(message.guild.member(client.user).highestRole.color)
-    .setTimestamp(message.createdAt)
-    .addField("Muted By: ", moderator, true)
-    .addField("Reason: ", reason, true)
-    .addField("Time: ", time, true)
-    .setFooter("Automated Mod Logging");
+    .setFooter("Automated mod logging")
+    .setTimestamp(message.createdAt);
+  logchannel.send(`**Infraction for:** <@${user.id}>`, {embed});
 
-    logchannel.send(`**Infraction for: **${user}`, {embed}).catch(console.log)
-
+  if(config[guild.id].muteMessage == "null"){
+    user.send(`You have been muted in ${guild.name} for ${reason}. You will be umuted in ${time}.`);
   }else{
-    message.reply("Shade \`Error`\ - You must add a reason!")
-    .then(message=>message.react('❎'));
+    user.send(config[guild.id].muteMessage);
   }
 }

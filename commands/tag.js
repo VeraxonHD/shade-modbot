@@ -19,14 +19,6 @@ exports.run = (client, message, args, Discord) => {
     }else if(JSON.stringify(taglist[guild.id]).indexOf(tagname) != -1){
       message.channel.send("`Shade Error` - This custom command already exists. Please choose a unique name or type `!!tag list`")
     }else{
-      /*var output = {
-        [guild.id] : {
-          [tagname] : tagcontent
-        },
-        taglist
-      }
-      */
-
       taglist[guild.id][tagname] = tagcontent
       jsonfile.writeFile("./tags.json", taglist, {spaces: 4}, function(error){
         if(!error){
@@ -35,10 +27,6 @@ exports.run = (client, message, args, Discord) => {
           message.channel.send("`Shade Error` - The command did not get created.")
         }
       })
-      /*jsonfile.writeFile("./tags.json", output, {spaces: 2}, function(err){
-        console.log(err);
-      })
-      */
     }
 
   }else if(args[0] == "delete"){
