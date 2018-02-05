@@ -3,3 +3,4 @@ commands/disabled
 start.bat
 .env
 commands/group.js
+nodemon.js
