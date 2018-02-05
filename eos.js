@@ -374,7 +374,7 @@ client.on("message", message => {
   }
 });
 
-//AUTOMOD
+/*AUTOMOD
 client.on("message", message =>{
   if(message.channel.type == "dm") return;
   function testRegEx(regex){
@@ -391,9 +391,9 @@ client.on("message", message =>{
     if(testRegEx("(discord\.gg/)") && config[message.guild.id].disabledAutoMod.indexOf("discordLinks") == -1){
       message.delete();
     }
-    /*if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
+    if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
       message.delete();
-    }*/
+    }
     if(message.mentions.users.size > 5 && config[message.guild.id].disabledAutoMod.indexOf("massMentions") == -1){
       message.delete();
     } 
@@ -401,7 +401,7 @@ client.on("message", message =>{
 
   
 })
-
+*/
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n", err);
 });
