@@ -15,7 +15,7 @@ const logchannel = message.guild.channels.get(config[guild.id].logchannelID)
     message.channel.send("`User Error` - You do not haver permission to perform this command. Please contact a server administrator.");
   }else if(guild.member(user).roles.has(role.id) == true){
     message.channel.send(`\`Eos Error\` - ${guild.member(user).displayName} could not be given this role as they already have it.`)
-  }else if(member.roles.size > 0 && role.comparePositionTo(member.highestRole) >= 0){
+  }else if(member.roles.size > 0 && member.highestRole.comparePositionTo(role) >= 0){
     return message.channel.send("`Eos Error` - That role cannot be applied to that user.");
   }else{
     guild.member(user).addRole(role).then(gm => {
