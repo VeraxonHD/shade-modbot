@@ -278,7 +278,7 @@ client.on("message", message => {
     return;
   }else{
     var threadChan = mmGuild.channels.find("name", `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
-    var categoryChannel = mmGuild.channels.get("391808224489242626")
+    var categoryChannel = mmGuild.channels.get("410381886033231874")
     if(!threadChan){
       mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
         newChan.setParent(categoryChannel);
