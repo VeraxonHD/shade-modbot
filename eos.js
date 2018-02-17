@@ -8,6 +8,7 @@ var dateformat = require("dateformat");
 var commandJSON = require("./commands.json");
 var jsonfile = require("jsonfile");
 var mutes = require("./mutes.json");
+var modmailjson = require("./modmailthreads.json")
 
 //logs in using token
 client.login(process.env.TOKEN);
@@ -257,7 +258,17 @@ client.on("guildCreate", guild =>{
     return
   }
 
-  
+  const embed = new Discord.RichEmbed()
+    .setAuthor("I Joined a new Guild.")
+    .addField("Member Count", guild.members.size)
+    .addField("Owner Tag", guild.owner.user.tag)
+    .addField("Guild Name", guild.name)
+    .addField("Guild ID", guild.id)
+    .addField("Guild Region", guild.region)
+    .setColor("#AA1D47")
+    .setTimestamp(message.createdAt);
+
+  client.guilds.get("292941255976026114").members.get(config.general.ownerID).send({embed})
 })
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -270,26 +281,73 @@ fs.readdir("./events/", (err, files) => {
   });
 });
 
+
 //MODMAIL MESSAGE EVENT [CREATING THE CHANNEL/SENDING CORRESPONDENCE THROUGH BOT BY USER]
 client.on("message", message => {
-  var tdGuild = client.guilds.find("id", "137719638556540929");
-  var mmGuild = client.guilds.find("id", "391798629872173066");
-  if(message.channel.type != "dm" || !tdGuild.members.get(message.author.id) || message.author.id === client.user.id){
-    return;
-  }else{
-    var threadChan = mmGuild.channels.find("name", `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
-    var categoryChannel = mmGuild.channels.get("410381886033231874")
-    if(!threadChan){
-      mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
-        newChan.setParent(categoryChannel);
-        newChan.setTopic(message.author.id);
-        newChan.send(`@here - New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
-        newChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
-      }).catch(err => console.log(err));
-    }else{
-      threadChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
-    }
+  if(message.channel.type != "dm" || message.author.id == client.user.id) return
+  if(message.content.startsWith("!!"))return;
+  if(!Number.isInteger(parseInt(message.content))){
+    
   }
+
+  var guild = ""
+  var i = 0
+  var guilds = client.guilds.array();
+  var userguildmatchArray = []
+  guilds.forEach(element => {
+    if(element.members.get(message.author.id) && !undefined){
+      userguildmatchArray[i++] = element.name
+    }
+  });
+  if(userguildmatchArray.length > 1){
+    message.author.send(`Hello there. Because you are in more than one guild I operate in, and are requesting modmail support, could you please tell me which Guild this support message refers to?\n Just send a single number that refers to the guild **e.g if you want to contact The Division staff, send 1**`);
+    var newArray = []
+    i = 0
+    userguildmatchArray.forEach(element => {
+      newArray[i++] = i + ") " + element
+    });
+    message.author.send(newArray)
+    const filter = m => parseInt(m.content) && m.author.id != client.user.id
+    const collector = message.channel.createMessageCollector(filter, {time: 60000})
+
+    collector.on("collect", m =>{
+      if(Number.isInteger(parseInt(m))){
+        guild = client.guilds.find("name", userguildmatchArray[m - 1])
+        collector.end
+        m.author.send("Thanks. I'll contact their staff now for you.")
+      }
+    })
+
+    collector.on("end", collected =>{
+      if(collected.size == 0){
+        return message.author.send("The modmail request was cancelled because you did not respond with a guild number from the menu.")
+      }else{
+        var modmailCategory = guild.channels.get(config[guild.id].modmailCategory);
+
+        if(config[guild.id].modmailEnabled == true){
+           if(!modmailjson[message.author.id]){
+              guild.createChannel(message.author.username, "text").then(chan => {
+                chan.setParent(modmailCategory)
+                modmailjson[message.author.id] = {
+                  "usertag" : message.author.tag,
+                  "channelid" : chan.id,
+                  "guildid" : guild.id
+                }
+                chan.send(`@here - New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
+                chan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
+              })   
+            }else{
+              var msgchan = guild.channels.get(modmailjson[message.author.id].channelid);
+              threadChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
+            }
+        }else{
+          message.channel.send("Modmail is not enabled.")
+        }
+      }
+    })
+  }
+  
+  
 })
 
 //MODMAIL CHANNEL COMMAND HANDLING
@@ -373,35 +431,6 @@ client.on("message", message => {
     console.log(err)
   }
 });
-
-/*AUTOMOD
-client.on("message", message =>{
-  if(message.channel.type == "dm") return;
-  function testRegEx(regex){
-    var regexToTest = new RegExp(regex);
-    return regexToTest.test(message.content);
-  }
-  var guild = message.guild;
-  var member = guild.members.get(message.author.id)
-
-  if(member.roles.size > 0 && member.highestRole.comparePositionTo(guild.members.get(client.user.id).highestRole) >= 0 || member.hasPermission("MANAGE_MESSAGES")){
-    return;
-    console.log();
-  }else{
-    if(testRegEx("(discord\.gg/)") && config[message.guild.id].disabledAutoMod.indexOf("discordLinks") == -1){
-      message.delete();
-    }
-    if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
-      message.delete();
-    }
-    if(message.mentions.users.size > 5 && config[message.guild.id].disabledAutoMod.indexOf("massMentions") == -1){
-      message.delete();
-    } 
-  }
-
-  
-})
-*/
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n", err);
 });

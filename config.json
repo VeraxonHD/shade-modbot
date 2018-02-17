@@ -114,6 +114,8 @@
         "muteRoleName": "Muted",
         "muteMessage": "null",
         "selfRoles": "null",
-        "joinLogChannel": "null"
+        "joinLogChannel": "null",
+        "modmailEnabled": "true",
+        "modmailCategory": "413813342918934531"
     }
 }
