@@ -270,62 +270,6 @@ fs.readdir("./events/", (err, files) => {
   });
 });
 
-//MODMAIL MESSAGE EVENT [CREATING THE CHANNEL/SENDING CORRESPONDENCE THROUGH BOT BY USER]
-client.on("message", message => {
-  var tdGuild = client.guilds.find("id", "137719638556540929");
-  var mmGuild = client.guilds.find("id", "391798629872173066");
-  if(message.channel.type != "dm" || !tdGuild.members.get(message.author.id) || message.author.id === client.user.id){
-    return;
-  }else{
-    var threadChan = mmGuild.channels.find("name", `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
-    var categoryChannel = mmGuild.channels.get("410381886033231874")
-    if(!threadChan){
-      mmGuild.createChannel(`${message.author.username}-${message.author.discriminator}`, "text", null, "New ModMail Thread.").then(newChan => {
-        newChan.setParent(categoryChannel);
-        newChan.setTopic(message.author.id);
-        newChan.send(`@here - New ModMail Support Thread opened. Author: \`${message.author.tag}\` Time: \`${dateformat(message.createdAt, "dd/mm/yyyy - hh:MM:ss")}\``);
-        newChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
-      }).catch(err => console.log(err));
-    }else{
-      threadChan.send(`**[${dateformat(new Date(), "HH:MM:ss")}] <${message.author.tag}>** - ${message.content}`);
-    }
-  }
-})
-
-//MODMAIL CHANNEL COMMAND HANDLING
-client.on("message", message => {
-  var mmprefix = ".";
-  var tdGuild = client.guilds.find("id", "137719638556540929");
-  var mmGuild = client.guilds.find("id", "391798629872173066");
-
-  if(message.content.startsWith(mmprefix) && message.channel.type != "dm" && message.guild.id == mmGuild.id){
-    let command = message.content.split(" ")[0];
-    command = command.slice(mmprefix.length);
-    var guild = message.guild;
-    var logchannel = message.guild.channels.get(config[guild.id].logchannelID);
-    let args = message.content.split(" ").slice(1);
-
-    try {
-      if(command == "r"){
-        command = "reply"
-      }else if(command == "ar"){
-        command = "anonreply"
-      }
-      let commandFile = require(`./modmailcommands/${command}.js`);
-
-      if(config[guild.id].disabledCommands.indexOf(command) == -1){
-        commandFile.run(client, message, args, Discord, guild, command);
-      }else{
-        return(message.channel.send("This command has been disabled by a server administrator."));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }else{
-    return;
-  }
-})
-
 //GENERAL COMMANDS
 client.on("message", message => {
 
@@ -373,35 +317,6 @@ client.on("message", message => {
     console.log(err)
   }
 });
-
-/*AUTOMOD
-client.on("message", message =>{
-  if(message.channel.type == "dm") return;
-  function testRegEx(regex){
-    var regexToTest = new RegExp(regex);
-    return regexToTest.test(message.content);
-  }
-  var guild = message.guild;
-  var member = guild.members.get(message.author.id)
-
-  if(member.roles.size > 0 && member.highestRole.comparePositionTo(guild.members.get(client.user.id).highestRole) >= 0 || member.hasPermission("MANAGE_MESSAGES")){
-    return;
-    console.log();
-  }else{
-    if(testRegEx("(discord\.gg/)") && config[message.guild.id].disabledAutoMod.indexOf("discordLinks") == -1){
-      message.delete();
-    }
-    if(testRegEx("[A-z]{15,}") && config[message.guild.id].disabledAutoMod.indexOf("repeatedLetters") == -1){
-      message.delete();
-    }
-    if(message.mentions.users.size > 5 && config[message.guild.id].disabledAutoMod.indexOf("massMentions") == -1){
-      message.delete();
-    } 
-  }
-
-  
-})
-*/
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n", err);
 });
